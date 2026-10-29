@@ -48,6 +48,8 @@ The optional Dockerfile runs the .NET version on port 8080 as the built-in non-r
 - `src/Portfolio.Web/wwwroot/data/knowledge.json`: professional practice and personal learning tracks, rendered during content preparation.
 - `src/Portfolio.Web/wwwroot/scripts/domain-links.js`: illustrative domain relationships and links to anonymous work examples.
 - `src/Portfolio.Web/wwwroot/scripts/ui-labels.js`: shared English/Turkish accessible names, used at build time and during language switching.
+- `src/Portfolio.Web/wwwroot/scripts/decision-data.js`: fictional search/cache/event decisions, bilingual consequences and the small journey state model.
+- `src/Portfolio.Web/wwwroot/scripts/decision-lab.js`: the optional three-decision experience; no score, timer, external requests or stored visitor choices.
 - `src/Portfolio.Web/wwwroot/styles/`: tokens and responsive styles.
 - `scripts/make-documents.py`: optional CV and social-card generator; requires Pillow and ReportLab. Generated files are committed, so builds do not need Python.
 - `DESIGN.md`: the visual system and interaction guidance.

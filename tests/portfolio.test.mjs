@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { uiLabels, languageAction } from '../src/Portfolio.Web/wwwroot/scripts/ui-labels.js';
 import { domainLinks } from '../src/Portfolio.Web/wwwroot/scripts/domain-links.js';
+import { decisions, newDecisionSession, chooseDecision, advanceDecision } from '../src/Portfolio.Web/wwwroot/scripts/decision-data.js';
 
 const root = fileURLToPath(new URL('../',import.meta.url));
 const web = path.join(root,'src','Portfolio.Web');
@@ -66,6 +67,48 @@ test('redelivery checks completion before acknowledgement',() => {
 test('cache miss reads the source before populating Redis',() => {
   assert.deepEqual(traces.cache.steps.map(step=>step.state),['requested','miss','read','populated','returned']);
   assert.equal(traces.cache.steps[2].node,'database');
+});
+
+test('decision journey cannot skip unanswered rounds or accept another rounds choice', () => {
+  const initial = newDecisionSession();
+  assert.deepEqual(advanceDecision(initial), initial);
+  assert.deepEqual(chooseDecision(initial, 'deduplicate'), initial);
+  const second = advanceDecision(chooseDecision(initial, 'trace'));
+  assert.equal(second.index, 1);
+  assert.deepEqual(advanceDecision(second), second);
+  assert.deepEqual(chooseDecision(second, 'trace'), second);
+});
+
+test('all 27 decision routes finish with exactly three choices and do not advance twice', () => {
+  for (const first of decisions[0].choices) for (const second of decisions[1].choices) for (const third of decisions[2].choices) {
+    let state = newDecisionSession();
+    for (const choice of [first, second, third]) state = advanceDecision(chooseDecision(state, choice.id));
+    assert.equal(state.complete, true);
+    assert.deepEqual(state.answers, [first.id, second.id, third.id]);
+    assert.deepEqual(advanceDecision(state), state);
+    assert.deepEqual(chooseDecision(state, first.id), state);
+  }
+});
+
+test('exploring an alternative replaces only the current decision; replay starts empty', () => {
+  let state = advanceDecision(chooseDecision(newDecisionSession(), 'trace'));
+  state = chooseDecision(chooseDecision(state, 'forever'), 'coalesce');
+  assert.deepEqual(state.answers, ['trace', 'coalesce']);
+  assert.equal(state.complete, false);
+  assert.deepEqual(newDecisionSession(), { index: 0, answers: [], complete: false });
+});
+
+test('every choice has bilingual consequences and an illustrative three-step result', () => {
+  const bilingual = value => { for (const lang of ['en', 'tr']) assert.ok(value[lang]?.trim()); };
+  for (const round of decisions) {
+    [round.label, round.title, round.situation, round.question, round.signal, ...round.before].forEach(bilingual);
+    assert.equal(round.choices.length, 3);
+    assert.equal(new Set(round.choices.map(choice => choice.id)).size, 3);
+    for (const choice of round.choices) {
+      assert.equal(choice.after.length, 3);
+      [choice.label, choice.title, choice.explanation, ...choice.after].forEach(bilingual);
+    }
+  }
 });
 
 test('search lag keeps database commit and index reconciliation distinct',() => {

@@ -143,7 +143,7 @@
   "visitStatus": "Canlı sayfa ölçümleri / bu tarayıcı",
   "inspectVisit": "Ölçümleri yenile",
   "metricTracks": "Mühendislik alanı",
-  "metricScenarios": "Etkileşimli senaryo",
+  "metricScenarios": "Akış senaryosu",
   "learningBreakdown": "Alanlara göre eğitim",
   "relatedWork": "İlgili çalışmayı incele",
   "initialRelations": "Ürün → Arama · Veri · Cache",
@@ -163,5 +163,9 @@
   "visitDetails": "Bu sayfanın tarayıcı ölçümlerini incele",
   "professionalPractice": "İş deneyimi",
   "continuedStudy": "Uygulamalı öğrenme",
-  "personalPractice": "Kişisel çalışmalar"
+  "personalPractice": "Kişisel çalışmalar",
+  "decisionTitle": "Kararı sen ver.",
+  "decisionIntro": "Ürün değişti. Sistem henüz yetişemedi. Üç karar ver, sonuçlarını gör, başka bir yaklaşımı dene.",
+  "decisionStart": "Kontrolü devral",
+  "decisionNote": "Üç karar, kendi hızında. Bir uzmanlık testi değil, örnek mühendislik tercihleri. Seçimlerin bu sayfada kalır."
 }

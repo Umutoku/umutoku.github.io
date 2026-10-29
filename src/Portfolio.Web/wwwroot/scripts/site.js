@@ -1,6 +1,7 @@
 import { initDashboard } from './dashboard.js';
 import { uiLabels, languageAction } from './ui-labels.js';
 import { domainLinks } from './domain-links.js';
+import { initDecisionLab } from './decision-lab.js';
 const nodes = {
   product: { en:['Product','Catalog, categories and variants connect customer-facing APIs with Elasticsearch, Redis and PostgreSQL. I work across those boundaries.'],tr:['Ürün','Katalog, kategori ve varyantlar; müşteriye dönük API’leri Elasticsearch, Redis ve PostgreSQL ile birleştirir. Bu sınırlar arasında çalışıyorum.'] },
   search: { en:['Search','Elasticsearch indexing, category population, property matching and result counts. Search quality depends on the path from source data to the index.'],tr:['Arama','Elasticsearch indeksleme, kategori aktarımı, özellik eşleştirme ve sonuç sayıları. Arama kalitesi, kaynak veriden indekse uzanan akışa bağlıdır.'] },
@@ -20,7 +21,6 @@ function selectNode(key) {
   document.querySelectorAll('[data-node]').forEach(button => {
     const selected = button.dataset.node === key;
     button.classList.toggle('is-selected', selected);
-    button.classList.toggle('is-related', domainLinks[key].related.includes(button.dataset.node));
     button.setAttribute('aria-pressed', String(selected));
   });
   document.querySelector('[data-node-title]').textContent = nodes[key][language][0];
@@ -200,4 +200,5 @@ const preferredLanguage = new URLSearchParams(location.search).get('lang');
 if((preferredLanguage === 'tr' || preferredLanguage === 'en') && preferredLanguage !== language) await changeLanguage(preferredLanguage);
 selectNode(selectedNode);
 initDashboard();
+initDecisionLab();
 await loadScenario('cache');
