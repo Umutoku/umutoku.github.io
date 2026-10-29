@@ -1,11 +1,20 @@
 import {readFile,writeFile} from 'node:fs/promises';
 import credentials from './credentials-source.mjs';
+import { uiLabels, languageAction } from '../src/Portfolio.Web/wwwroot/scripts/ui-labels.js';
 const root = new URL('../src/Portfolio.Web/wwwroot/',import.meta.url);
 const base = (process.env.SITE_URL || 'https://umutoku.github.io/').replace(/\/?$/,'/');
 const esc = value => String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const unesc = value => value.replaceAll('&amp;','&').replaceAll('&quot;','"').replaceAll('&lt;','<').replaceAll('&gt;','>');
 const tr = JSON.parse(await readFile(new URL('data/tr.json',root),'utf8'));
 let html = await readFile(new URL('index.html',root),'utf8');
+const knowledge = JSON.parse(await readFile(new URL('data/knowledge.json',root),'utf8'));
+const label = (key, en, translated) => { tr[key] = translated; return `<span data-i18n="${key}">${esc(en)}</span>`; };
+const tracks = knowledge.tracks.map(track => `<article class="knowledge-track"><h3>${label('track'+track.id,track.title.en,track.title.tr)}</h3><p class="track-label">${label(track.scope==='personal'?'personalPractice':'professionalPractice',track.scope==='personal'?'Personal projects':'Professional practice',track.scope==='personal'?'Kişisel çalışmalar':'İş deneyimi')}</p><p class="track-tools">${esc(track.applied)}</p><details class="track-learning"><summary>${label('continuedStudy','Further hands-on learning','Uygulamalı öğrenme')}</summary><p class="track-exploration">${esc(track.exploration)}</p></details>${track.caseId?`<a class="text-link" href="#${track.caseId}" data-work-link>${label('relatedWork','Explore related work','İlgili çalışmayı incele')}</a>`:''}</article>`).join('');
+html = html.replace(/<div class="knowledge-map">[\s\S]*?<\/div><p class="knowledge-note"/,`<div class="knowledge-map">${tracks}</div><p class="knowledge-note"`);
+function localizeAria(page, lang) {
+ return page.replace(/data-i18n-aria="([^"]+)" aria-label="[^"]*"/g,(_,key)=>`data-i18n-aria="${key}" aria-label="${esc(uiLabels[key][lang])}"`);
+}
+html = localizeAria(html,'en');
 const featured = [credentials[0],credentials[5],credentials[7],credentials[6],credentials[22],credentials[1]];
 const card = item => `<a class="credential-feature" href="${esc(item.url)}" target="_blank" rel="noopener"><span>${esc(item.issuer)} / ${item.issued?.slice(0,4) || ''}</span><h3>${esc(item.title)}</h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a>`;
 html=html.replace(/<div class="featured-credentials">[\s\S]*?<\/div>/,`<div class="featured-credentials">${featured.map(card).join('')}</div>`);
@@ -37,7 +46,8 @@ function seo(page,lang,file) {
 </head>`);
 }
 await writeFile(new URL('index.html',root),seo(html,'en',''));
-await writeFile(new URL('tr.html',root),seo(translated,'tr','tr.html').replace('<html lang="en"','<html lang="tr"').replace('aria-label="Türkçeye geç" data-language>TR','aria-label="Switch to English" data-language>EN').replaceAll('href="credentials.html"','href="credentials-tr.html"'));
+await writeFile(new URL('tr.html',root),localizeAria(seo(translated,'tr','tr.html'),'tr').replace('<html lang="en"','<html lang="tr"').replace(`aria-label="${languageAction.en}" data-language>TR`,`aria-label="${languageAction.tr}" data-language>EN`).replaceAll('href="credentials.html"','href="credentials-tr.html"'));
+await writeFile(new URL('data/tr.json',root),JSON.stringify(tr,null,2)+'\n');
 await writeFile(new URL('data/en.json',root),JSON.stringify(en,null,2)+'\n');
 await writeFile(new URL('data/credentials.json',root),JSON.stringify({source:'https://www.linkedin.com/in/umutoku/details/certifications/',captured:'2026-10-29',credentials},null,2)+'\n');
 const categories=[...new Set(credentials.map(item=>item.category))];

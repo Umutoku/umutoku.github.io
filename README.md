@@ -45,6 +45,9 @@ The optional Dockerfile runs the .NET version on port 8080 as the built-in non-r
 - `scripts/credentials-source.mjs`: 47 public LinkedIn learning records, captured 29 October 2026. Original titles, issuers and listed issue dates are preserved; three records have no date. These include course completions and workshops as well as credentials.
 - `scripts/prepare.mjs`: generates English/Turkish pages, the searchable credential archive, translation data, sitemap and robots.txt.
 - `src/Portfolio.Web/wwwroot/data/traces.json`: shared demonstration catalog.
+- `src/Portfolio.Web/wwwroot/data/knowledge.json`: professional practice and personal learning tracks, rendered during content preparation.
+- `src/Portfolio.Web/wwwroot/scripts/domain-links.js`: illustrative domain relationships and links to anonymous work examples.
+- `src/Portfolio.Web/wwwroot/scripts/ui-labels.js`: shared English/Turkish accessible names, used at build time and during language switching.
 - `src/Portfolio.Web/wwwroot/styles/`: tokens and responsive styles.
 - `scripts/make-documents.py`: optional CV and social-card generator; requires Pillow and ReportLab. Generated files are committed, so builds do not need Python.
 - `DESIGN.md`: the visual system and interaction guidance.

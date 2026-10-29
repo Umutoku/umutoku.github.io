@@ -7,7 +7,9 @@
         "tr": "Servis mimarisi"
       },
       "applied": ".NET / REST / CQRS / Microservices",
-      "exploration": "Saga / Event Sourcing / Consul"
+      "exploration": "Saga / Event Sourcing / Consul",
+      "scope": "professional",
+      "caseId": "work-product"
     },
     {
       "id": "data",
@@ -16,7 +18,9 @@
         "tr": "Veri ve kalıcılık"
       },
       "applied": "PostgreSQL / SQL Server / EF Core",
-      "exploration": "Concurrency / Projections / Query semantics"
+      "exploration": "Concurrency / Projections / Query semantics",
+      "scope": "professional",
+      "caseId": "work-data"
     },
     {
       "id": "cache",
@@ -25,7 +29,9 @@
         "tr": "Cache ve tutarlılık"
       },
       "applied": "Redis / Cache keys / Invalidation",
-      "exploration": "Distributed cache / TTL / Warm-up"
+      "exploration": "Distributed cache / TTL / Warm-up",
+      "scope": "professional",
+      "caseId": "work-data"
     },
     {
       "id": "queues",
@@ -34,7 +40,9 @@
         "tr": "Kuyruklar ve iş akışları"
       },
       "applied": "Kafka / RabbitMQ / Hangfire",
-      "exploration": "MassTransit / Saga state machines / MQTT"
+      "exploration": "MassTransit / Saga state machines / MQTT",
+      "scope": "professional",
+      "caseId": "work-jobs"
     },
     {
       "id": "observability",
@@ -43,7 +51,9 @@
         "tr": "Gözlemlenebilirlik"
       },
       "applied": "Logs / Traceability / Elasticsearch / Kibana",
-      "exploration": "OpenTelemetry / OTLP / Prometheus / Jaeger"
+      "exploration": "OpenTelemetry / OTLP / Prometheus / Jaeger",
+      "scope": "professional",
+      "caseId": "work-operations"
     },
     {
       "id": "delivery",
@@ -52,7 +62,9 @@
         "tr": "Konteyner ve dağıtım"
       },
       "applied": "Docker / Kubernetes / Jenkins",
-      "exploration": "Docker Compose / Service discovery / SRE"
+      "exploration": "Docker Compose / Service discovery / SRE",
+      "scope": "professional",
+      "caseId": "work-operations"
     },
     {
       "id": "search",
@@ -61,7 +73,9 @@
         "tr": "Arama ve keşif"
       },
       "applied": "Elasticsearch / Indexing / Filters",
-      "exploration": "Relevance / Synonyms / Retrieval"
+      "exploration": "Relevance / Synonyms / Retrieval",
+      "scope": "professional",
+      "caseId": "work-search"
     },
     {
       "id": "cloud",
@@ -70,7 +84,8 @@
         "tr": "Bulut ve serverless"
       },
       "applied": "Azure / AWS / Cloud integrations",
-      "exploration": "Azure Functions / Storage / Service Bus"
+      "exploration": "Azure Functions / Storage / Service Bus",
+      "scope": "professional"
     },
     {
       "id": "identity",
@@ -79,7 +94,9 @@
         "tr": "Kimlik ve güvenlik"
       },
       "applied": "Identity / Roles / Validation / API contracts",
-      "exploration": "ASP.NET Identity / Data Protection / API security"
+      "exploration": "ASP.NET Identity / Data Protection / API security",
+      "scope": "professional",
+      "caseId": "work-identity"
     },
     {
       "id": "realtime",
@@ -88,7 +105,8 @@
         "tr": "Gerçek zamanlı sistemler"
       },
       "applied": "Industrial IoT / Modbus / Event processing",
-      "exploration": "gRPC / Streaming / SignalR / MQTT"
+      "exploration": "gRPC / Streaming / SignalR / MQTT",
+      "scope": "professional"
     },
     {
       "id": "quality",
@@ -97,7 +115,9 @@
         "tr": "Test ve temeller"
       },
       "applied": "Unit / Integration / Regression testing",
-      "exploration": "Design patterns / TPL / PLINQ / Parallelism"
+      "exploration": "Design patterns / TPL / PLINQ / Parallelism",
+      "scope": "professional",
+      "caseId": "work-product"
     },
     {
       "id": "ai",
@@ -106,7 +126,8 @@
         "tr": "Yapay zekâ ve yeni arayüzler"
       },
       "applied": "Semantic Kernel / LangChain / LangGraph / RAG",
-      "exploration": "Ollama / MCP / Blazor / MAUI / React"
+      "exploration": "Ollama / MCP / Blazor / MAUI / React",
+      "scope": "personal"
     }
   ],
   "learningGroups": {

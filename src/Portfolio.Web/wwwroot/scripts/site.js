@@ -1,4 +1,6 @@
 import { initDashboard } from './dashboard.js';
+import { uiLabels, languageAction } from './ui-labels.js';
+import { domainLinks } from './domain-links.js';
 const nodes = {
   product: { en:['Product','Catalog, categories and variants connect customer-facing APIs with Elasticsearch, Redis and PostgreSQL. I work across those boundaries.'],tr:['Ürün','Katalog, kategori ve varyantlar; müşteriye dönük API’leri Elasticsearch, Redis ve PostgreSQL ile birleştirir. Bu sınırlar arasında çalışıyorum.'] },
   search: { en:['Search','Elasticsearch indexing, category population, property matching and result counts. Search quality depends on the path from source data to the index.'],tr:['Arama','Elasticsearch indeksleme, kategori aktarımı, özellik eşleştirme ve sonuç sayıları. Arama kalitesi, kaynak veriden indekse uzanan akışa bağlıdır.'] },
@@ -18,16 +20,21 @@ function selectNode(key) {
   document.querySelectorAll('[data-node]').forEach(button => {
     const selected = button.dataset.node === key;
     button.classList.toggle('is-selected', selected);
+    button.classList.toggle('is-related', domainLinks[key].related.includes(button.dataset.node));
     button.setAttribute('aria-pressed', String(selected));
   });
   document.querySelector('[data-node-title]').textContent = nodes[key][language][0];
   document.querySelector('[data-node-description]').textContent = nodes[key][language][1];
+  const relation = domainLinks[key];
+  document.querySelector('[data-domain-work]').href = `#${relation.caseId}`;
+  document.querySelector('[data-node-relations]').textContent = `${nodes[key][language][0]} → ${relation.related.map(id=>nodes[id][language][0]).join(' · ')}`;
 }
 document.querySelectorAll('[data-node]').forEach(button => button.addEventListener('click', () => selectNode(button.dataset.node)));
 const menu = document.querySelector('.menu-button');
 const mobileNav = document.querySelector('#mobile-nav');
-function closeMenu() { mobileNav.hidden = true; menu.setAttribute('aria-expanded','false'); }
-menu.addEventListener('click', () => { const open = mobileNav.hidden; mobileNav.hidden = !open; menu.setAttribute('aria-expanded', String(open)); });
+function updateMenuLabel() { menu.setAttribute('aria-label',uiLabels[mobileNav.hidden?'openNavigation':'closeNavigation'][language]); }
+function closeMenu() { mobileNav.hidden = true; menu.setAttribute('aria-expanded','false'); updateMenuLabel(); }
+menu.addEventListener('click', () => { const open = mobileNav.hidden; mobileNav.hidden = !open; menu.setAttribute('aria-expanded', String(open)); updateMenuLabel(); });
 mobileNav.addEventListener('click', event => { if(event.target.closest('a')) closeMenu(); });
 document.addEventListener('keydown', event => { if(event.key === 'Escape' && !mobileNav.hidden) { closeMenu(); menu.focus(); } });
 document.documentElement.classList.remove('no-js');
@@ -55,15 +62,12 @@ async function changeLanguage(next) {
   document.documentElement.lang = next;
   document.querySelectorAll('[data-i18n]').forEach(element => { if(copies[next][element.dataset.i18n]) writeText(element, copies[next][element.dataset.i18n]); });
   languageButton.textContent = next === 'en' ? 'TR' : 'EN';
-  languageButton.setAttribute('aria-label', next === 'en' ? 'Türkçeye geç' : 'Switch to English');
+  languageButton.setAttribute('aria-label', languageAction[next]);
   languageButton.removeAttribute('title');
   document.title = text('Umut Oku | .NET Backend Engineer', 'Umut Oku | .NET Backend Mühendisi');
   document.querySelector('meta[name="description"]').content = text('Umut Oku: .NET and distributed systems engineer. Product, Elasticsearch, PostgreSQL, Redis, messaging, payments and DevOps.', 'Umut Oku: .NET, mikroservis, Elasticsearch, PostgreSQL, Redis ve DevOps. Ürün, veri, ödeme ve dağıtık sistemler.');
-  menu.setAttribute('aria-label', text('Open navigation', 'Menüyü aç'));
-  document.querySelector('.desktop-nav').setAttribute('aria-label',text('Main navigation','Ana menü'));
-  mobileNav.setAttribute('aria-label',text('Mobile navigation','Mobil menü'));
-  document.querySelector('.work-filters').setAttribute('aria-label',text('Filter selected work','Çalışmaları filtrele'));
-  document.querySelector('.scenario-choices').setAttribute('aria-label',text('Choose a demonstration scenario','Bir örnek senaryo seç'));
+  document.querySelectorAll('[data-i18n-aria]').forEach(element=>element.setAttribute('aria-label',uiLabels[element.dataset.i18nAria][next]));
+  updateMenuLabel();
   document.querySelector('[data-credentials-link]').href = text('credentials.html','credentials-tr.html');
   selectNode(selectedNode);
   if (currentTrace) renderTrace(currentTrace);
@@ -80,13 +84,31 @@ async function changeLanguage(next) {
 }
 languageButton.addEventListener('click', () => changeLanguage(language === 'en' ? 'tr' : 'en'));
 
-document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
-  const category = button.dataset.filter;
-  document.querySelectorAll('[data-filter]').forEach(filter => { const active = filter === button; filter.classList.toggle('is-active',active); filter.setAttribute('aria-pressed',String(active)); });
+function filterWork(category) {
+  document.querySelectorAll('[data-filter]').forEach(filter => { const active = filter.dataset.filter === category; filter.classList.toggle('is-active',active); filter.setAttribute('aria-pressed',String(active)); });
   let visible = 0;
   document.querySelectorAll('.case').forEach(item => { item.hidden = category !== 'all' && item.dataset.category !== category; if(!item.hidden) visible++; });
+  const more = document.querySelector('[data-more-work]');
+  more.hidden = ![...more.querySelectorAll('.case')].some(item=>!item.hidden);
+  more.open = category !== 'all';
   document.querySelector('[data-filter-status]').textContent = text(`${visible} selected work examples shown.`,`${visible} çalışma örneği gösteriliyor.`);
+}
+document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>filterWork(button.dataset.filter)));
+function openWork(id,focus=false) {
+  const item = document.getElementById(id);
+  if(!item?.classList.contains('case')) return;
+  filterWork('all');
+  const parent = item.closest('[data-more-work]');
+  if(parent) parent.open = true;
+  item.open = true;
+  if(focus) { item.querySelector('summary').focus({preventScroll:true}); item.scrollIntoView({behavior:reducedMotion.matches?'instant':'smooth',block:'start'}); }
+}
+document.querySelectorAll('[data-work-link]').forEach(link=>link.addEventListener('click',event=>{
+  event.preventDefault();
+  history.pushState(null,'',link.hash);
+  openWork(link.hash.slice(1),true);
 }));
+window.addEventListener('hashchange',()=>openWork(location.hash.slice(1)));
 
 let currentScenario = 'cache';
 let currentTrace;

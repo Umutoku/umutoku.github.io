@@ -4,9 +4,9 @@
 /* Hallmark · pre-emit critique: P4 H4 E4 S4 R5 V4 · weakest: specificity; paired payment-state exploration with verified professional work. */
 @import url('./tokens.css');
 @import url('./base.css');
-@font-face { font-family: 'Host Grotesk'; font-style: normal; font-weight: 400; font-display: swap; src: url('../fonts/host-grotesk-400.ttf') format('truetype'); }
-@font-face { font-family: 'Host Grotesk'; font-style: normal; font-weight: 500; font-display: swap; src: url('../fonts/host-grotesk-500.ttf') format('truetype'); }
-@font-face { font-family: 'Host Grotesk'; font-style: normal; font-weight: 600; font-display: swap; src: url('../fonts/host-grotesk-600.ttf') format('truetype'); }
+@font-face { font-family: 'Host Grotesk'; font-style: normal; font-weight: 400; font-display: optional; src: url('../fonts/host-grotesk-400.ttf') format('truetype'); }
+@font-face { font-family: 'Host Grotesk'; font-style: normal; font-weight: 500; font-display: optional; src: url('../fonts/host-grotesk-500.ttf') format('truetype'); }
+@font-face { font-family: 'Host Grotesk'; font-style: normal; font-weight: 600; font-display: optional; src: url('../fonts/host-grotesk-600.ttf') format('truetype'); }
 :root { --container: 1480px; --gutter: 64px; --text-display: clamp(3rem, 5.8vw, 5.5rem); --space-zero: 0; --space-button: 20px; --space-section: 128px; --space-hero: 72px; --color-clear: transparent; --color-grid: oklch(23% .008 250); --font-outlier: ui-monospace, 'Cascadia Code', Consolas, monospace; }
 html { scroll-behavior: smooth; }
 body { font-synthesis: none; }
@@ -200,7 +200,7 @@ summary::-webkit-details-marker { display: none; }
 .dashboard-section { padding-top: var(--space-3xl); }
 .dashboard-toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); }
 .dashboard-toolbar p { color: var(--color-muted); font-size: 14px; }
-.metric-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); margin: var(--space-xl) 0; border-block: 1px solid var(--color-rule-2); }
+.metric-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); margin: var(--space-xl) 0; border-block: 1px solid var(--color-rule-2); }
 .metric-grid > div { padding: var(--space-lg) var(--space-lg) var(--space-lg) 0; }
 .metric-grid dt { color: var(--color-muted); font-size: 14px; }
 .metric-grid dd { margin: var(--space-md) 0 0; font-size: clamp(2rem,3.2vw,3rem); line-height: 1; letter-spacing: -.035em; }
@@ -220,14 +220,40 @@ summary::-webkit-details-marker { display: none; }
 .case-toggle { grid-column: 3; grid-row: 1/3; }
 .case summary { row-gap: var(--space-md); }
 @media(max-width:900px) { .case-toggle { grid-column: 2; grid-row: 1/3; } }
-@media(max-width:1100px) { .desktop-nav { gap: var(--space-sm); } .desktop-nav a { font-size: 13px; } .landscape-map .system-node { font-size: 15px; padding-inline: var(--space-xs); column-gap: var(--space-xs); } .landscape-map .node-sub { font-size: 11px; } }
+@media(max-width:1100px) { .desktop-nav { gap: var(--space-sm); } .desktop-nav a { font-size: 13px; } .landscape-map .system-node { font-size: 15px; padding-inline: var(--space-xs); column-gap: var(--space-xs); } .landscape-map .node-sub { font-size: 12px; } }
 @media(max-width:800px) { .landscape-map { grid-template-columns: repeat(2,minmax(0,1fr)); } .landscape-map .system-node { min-height: 88px; font-size: 15px; grid-column: auto; } .landscape-map .node-sub { font-size: 12px; } .simulation-controls { display: block; } .run-button { margin-top: var(--space-lg); } .metric-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .metric-grid > div { border-bottom: 1px solid var(--color-rule); } .language-chart { grid-template-columns: minmax(0,1fr); gap: var(--space-lg); } }
-@media(max-width:520px) { .hero h1 { font-size: clamp(2rem,8.7vw,2.8rem); } .landscape-map .system-node { grid-template-columns: 28px minmax(0,1fr); gap: var(--space-xs); font-size: 13px; min-height: 86px; } .landscape-map .node-icon { width: 24px; } .landscape-map .node-icon svg { width: 22px; height: 22px; } .landscape-map .node-sub { font-size: 10px; } .dashboard-toolbar { flex-direction: column; align-items: start; } .language-row { grid-template-columns: 120px minmax(0,1fr) 24px; gap: var(--space-sm); } .metric-grid dt { font-size: 12px; } }
+@media(max-width:520px) { .hero h1 { font-size: clamp(2rem,8.7vw,2.8rem); } .landscape-map .system-node { grid-template-columns: 28px minmax(0,1fr); gap: var(--space-xs); font-size: 13px; min-height: 86px; } .landscape-map .node-icon { width: 24px; } .landscape-map .node-icon svg { width: 22px; height: 22px; } .landscape-map .node-sub { font-size: 12px; line-height: 1.4; } .dashboard-toolbar { flex-direction: column; align-items: start; } .language-row { grid-template-columns: 120px minmax(0,1fr) 24px; gap: var(--space-sm); } .metric-grid dt { font-size: 12px; } }
 .knowledge-map { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: var(--space-xl); }
 .knowledge-track { border-top: 1px solid var(--color-rule-2); padding-top: var(--space-lg); }
 .knowledge-track h3 { font-size: 24px; line-height: 1.25; }
 .track-tools { margin-top: var(--space-lg); font-size: 15px; line-height: 1.7; color: var(--color-ink-2); }
 .track-exploration { margin-top: var(--space-sm); font-size: 14px; color: var(--color-muted); line-height: 1.7; }
 .knowledge-note { margin-top: var(--space-xl); font-size: 14px; color: var(--color-muted); max-width: 80ch; }
+.workbench-actions { display: flex; flex-direction: column; align-items: end; gap: var(--space-xs); }
+.node-description .node-detail-title { grid-column: 1; grid-row: 1/3; }
+.node-description .domain-relations { grid-column: 2; margin: 0; color: var(--color-accent); font-size: 13px; }
+.node-description [data-node-description] { grid-column: 2; }
+.landscape-map .system-node.is-related:not(.is-selected) { border-color: var(--color-rule-2); border-style: dotted; border-width: 1px; }
+.case-result { grid-column: 1/-1; padding-top: var(--space-lg); border-top: 1px solid var(--color-rule); }
+.case-content .case-result p { max-width: 75ch; color: var(--color-ink-2); }
+.more-work > summary, .visit-diagnostics > summary { cursor: pointer; padding-block: var(--space-lg); font-size: 16px; list-style: disclosure-closed inside; }
+.more-work[open] > summary, .visit-diagnostics[open] > summary { list-style-type: disclosure-open; }
+.more-work { margin-top: var(--space-lg); }
+.more-work .case-name { font-size: clamp(1.4rem,2vw,2rem); }
+.more-work .case summary { padding-block: var(--space-lg); }
+.experience-context { margin-block: var(--space-xs) var(--space-sm); font-size: 14px; color: var(--color-accent); }
+.experience-role { font-weight: 500; }
+.track-label { margin-top: var(--space-lg); font-size: 13px; color: var(--color-accent); }
+.track-tools { margin-top: var(--space-xs); }
+.track-learning { margin-top: var(--space-sm); }
+.track-learning summary { cursor: pointer; font-size: 14px; color: var(--color-muted); padding-block: var(--space-xs); list-style: disclosure-closed inside; }
+.track-learning[open] summary { list-style-type: disclosure-open; }
+.knowledge-track > .text-link { display: inline-block; margin-top: var(--space-xs); font-size: 14px; }
+.visit-diagnostics { margin-top: var(--space-lg); border-top: 1px solid var(--color-rule); }
+.visit-diagnostics > p { margin-block: var(--space-md); }
+.dashboard-section { padding-top: 0; }
+.lab-section { padding-top: var(--space-section); }
+@media(max-width:800px) { .workbench-actions { align-items: start; } .workbench-actions .trace-link { margin-left: 0; } }
+@media(max-width:520px) { .node-description .node-detail-title { grid-column: 1; grid-row: auto; } .node-description .domain-relations, .node-description [data-node-description] { grid-column: 1; } .metric-grid { grid-template-columns: minmax(0,1fr); } .metric-grid > div { display: flex; justify-content: space-between; align-items: center; gap: var(--space-md); } .metric-grid dd { margin: 0; font-size: 28px; } }
 @media(max-width:1000px) { .knowledge-map { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media(max-width:640px) { .knowledge-map { grid-template-columns: minmax(0,1fr); gap: var(--space-xl); } .knowledge-track h3 { font-size: 25px; } .language-row { grid-template-columns: 150px minmax(0,1fr) 24px; } }

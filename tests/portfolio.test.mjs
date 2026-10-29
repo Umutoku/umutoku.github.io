@@ -4,6 +4,8 @@ import { readFile, readdir } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { uiLabels, languageAction } from '../src/Portfolio.Web/wwwroot/scripts/ui-labels.js';
+import { domainLinks } from '../src/Portfolio.Web/wwwroot/scripts/domain-links.js';
 
 const root = fileURLToPath(new URL('../',import.meta.url));
 const web = path.join(root,'src','Portfolio.Web');
@@ -75,6 +77,28 @@ test('every translatable element has Turkish copy',async () => {
   const translations=JSON.parse(await readFile(path.join(publicDir,'data','tr.json'),'utf8'));
   const keys=[...html.matchAll(/data-i18n="([^"]+)"/g)].map(match=>match[1]);
   for(const key of keys) assert.ok(translations[key]?.trim(),`Missing translation: ${key}`);
+});
+
+test('first-load accessibility labels use the document language before JavaScript',async () => {
+  for(const [file,language] of [['index.html','en'],['tr.html','tr']]) {
+    const page=await readFile(path.join(publicDir,file),'utf8');
+    for(const [,key,label] of page.matchAll(/data-i18n-aria="([^"]+)" aria-label="([^"]*)"/g)) {
+      assert.equal(label,uiLabels[key][language],`${file}: ${key}`);
+    }
+    assert.ok(page.includes(`aria-label="${languageAction[language]}"`));
+    assert.doesNotMatch(page, /class="identity"[^>]*aria-label=/);
+  }
+});
+
+test('every domain and toolkit link resolves to an anonymous, available work example',async () => {
+  const knowledge=JSON.parse(await readFile(path.join(publicDir,'data','knowledge.json'),'utf8'));
+  for(const item of [...Object.values(domainLinks),...knowledge.tracks.filter(x=>x.caseId)]) {
+    assert.ok(html.includes(`id="${item.caseId}"`),item.caseId);
+  }
+  assert.equal(knowledge.tracks.find(x=>x.id==='ai').scope,'personal');
+  assert.equal([...html.matchAll(/class="case case-featured"/g)].length,3);
+  const cases=[...html.matchAll(/<details class="case[^>]*>[\s\S]*?<\/details>/g)].map(x=>x[0]).join('');
+  assert.doesNotMatch(cases,/Özdisan|Iyzico|Garanti|Param POS|KoçDigital/i);
 });
 test('local links and resources work under a GitHub project subpath',async () => {
   const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
