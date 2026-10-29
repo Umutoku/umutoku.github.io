@@ -30,9 +30,9 @@ The intended user-site repository is `Umutoku/umutoku.github.io`, served at `htt
 
 1. Push the reviewed source to the repository.
 2. In **Settings → Pages**, select **GitHub Actions** as the source.
-3. Run **Publish portfolio to GitHub Pages** in Actions.
+3. Push to `main`, or run **Publish portfolio to GitHub Pages** manually in Actions.
 
-The workflow builds and tests .NET, exports the static site and deploys the resulting artifact. Publishing is a manual workflow action. `Verify portfolio` runs on pushes and pull requests.
+The workflow builds and tests .NET, exports the static site and deploys the resulting artifact. Pushes to `main` publish automatically; manual runs are also available. `Verify portfolio` runs on pushes and pull requests.
 
 For a different host or project subpath, set `SITE_URL` before preparing/exporting. The URL must include the trailing project path, for example `https://username.github.io/portfolio/`. Relative assets keep the UI portable. Update the CV's printed address with `scripts/make-documents.py` if changing the canonical site URL.
 
