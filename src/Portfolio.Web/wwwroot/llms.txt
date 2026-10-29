@@ -15,4 +15,4 @@ Professional work spans product/catalog APIs, Elasticsearch search and indexing,
 - [GitHub](https://github.com/Umutoku)
 
 ## Interpretation
-Architecture and failure scenarios are illustrative. They are not production topology or employer metrics. The dashboard groups verified learning records by topic; live page diagnostics refer only to the current browser visit. Course completions are not automatically professional certifications. No quantified production performance claims are made.
+Interactive architecture and failure scenarios use sample data. The dashboard groups courses, workshops and credentials by topic; browser diagnostics show loading measurements for the current visit. Professional work, personal projects and learning records are labelled separately.
