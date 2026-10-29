@@ -1,4 +1,5 @@
 import { decisions, newDecisionSession, chooseDecision, advanceDecision } from './decision-data.js';
+import { pageHref } from './page-routes.js';
 
 export function initDecisionLab() {
   const root = document.querySelector('#decision-lab');
@@ -65,7 +66,7 @@ export function initDecisionLab() {
       const replay = element('button', 'button primary', t('Try a different route', 'Başka bir yol dene'));
       replay.type = 'button'; replay.dataset.decisionAction = 'restart';
       const work = element('a', 'text-link', t('See my engineering work', 'Yaptığım çalışmaları incele'));
-      work.href = '#work';
+      work.href = pageHref('work',lang());
       actions.append(replay, work);
       summary.append(actions);
       board.append(summary);

@@ -6,12 +6,15 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { uiLabels, languageAction } from '../src/Portfolio.Web/wwwroot/scripts/ui-labels.js';
 import { domainLinks } from '../src/Portfolio.Web/wwwroot/scripts/domain-links.js';
+import { pageHref, localizeHref } from '../src/Portfolio.Web/wwwroot/scripts/page-routes.js';
 import { decisions, newDecisionSession, chooseDecision, advanceDecision } from '../src/Portfolio.Web/wwwroot/scripts/decision-data.js';
 
 const root = fileURLToPath(new URL('../',import.meta.url));
 const web = path.join(root,'src','Portfolio.Web');
 const publicDir = path.join(web,'wwwroot');
 const html = await readFile(path.join(publicDir,'index.html'),'utf8');
+const workHtml = await readFile(path.join(publicDir,'work.html'),'utf8');
+const pageFiles=['index.html','tr.html','work.html','work-tr.html','lab.html','lab-tr.html'];
 const traces = JSON.parse(await readFile(path.join(publicDir,'data','traces.json'),'utf8'));
 let server;
 let base;
@@ -118,12 +121,19 @@ test('search lag keeps database commit and index reconciliation distinct',() => 
 });
 test('every translatable element has Turkish copy',async () => {
   const translations=JSON.parse(await readFile(path.join(publicDir,'data','tr.json'),'utf8'));
-  const keys=[...html.matchAll(/data-i18n="([^"]+)"/g)].map(match=>match[1]);
-  for(const key of keys) assert.ok(translations[key]?.trim(),`Missing translation: ${key}`);
+  const english=JSON.parse(await readFile(path.join(publicDir,'data','en.json'),'utf8'));
+  for(const file of pageFiles) {
+    const source=await readFile(path.join(publicDir,file),'utf8');
+    for(const [,key] of source.matchAll(/data-i18n="([^"]+)"/g)) {
+      assert.ok(translations[key]?.trim(),`Missing Turkish translation: ${file}: ${key}`);
+      assert.ok(english[key]?.trim(),`Missing English translation: ${file}: ${key}`);
+    }
+  }
 });
 
 test('first-load accessibility labels use the document language before JavaScript',async () => {
-  for(const [file,language] of [['index.html','en'],['tr.html','tr']]) {
+  for(const file of pageFiles) {
+    const language=file==='tr.html'||file.includes('-tr.')?'tr':'en';
     const page=await readFile(path.join(publicDir,file),'utf8');
     for(const [,key,label] of page.matchAll(/data-i18n-aria="([^"]+)" aria-label="([^"]*)"/g)) {
       assert.equal(label,uiLabels[key][language],`${file}: ${key}`);
@@ -136,24 +146,57 @@ test('first-load accessibility labels use the document language before JavaScrip
 test('every domain and toolkit link resolves to an anonymous, available work example',async () => {
   const knowledge=JSON.parse(await readFile(path.join(publicDir,'data','knowledge.json'),'utf8'));
   for(const item of [...Object.values(domainLinks),...knowledge.tracks.filter(x=>x.caseId)]) {
-    assert.ok(html.includes(`id="${item.caseId}"`),item.caseId);
+    assert.ok(workHtml.includes(`id="${item.caseId}"`),item.caseId);
   }
   assert.equal(knowledge.tracks.find(x=>x.id==='ai').scope,'personal');
-  assert.equal([...html.matchAll(/class="case case-featured"/g)].length,3);
-  const cases=[...html.matchAll(/<details class="case[^>]*>[\s\S]*?<\/details>/g)].map(x=>x[0]).join('');
+  assert.equal([...workHtml.matchAll(/class="case case-featured"/g)].length,3);
+  const cases=[...workHtml.matchAll(/<details class="case[^>]*>[\s\S]*?<\/details>/g)].map(x=>x[0]).join('');
   assert.doesNotMatch(cases,/Özdisan|Iyzico|Garanti|Param POS|KoçDigital/i);
 });
 test('local links and resources work under a GitHub project subpath',async () => {
-  const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
-  for(const [,link] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
-    if(link.startsWith('#')) { assert.ok(ids.has(link.slice(1)),`Missing anchor: ${link}`); continue; }
-    if(/^(https:|mailto:)/.test(link)) continue;
-    assert.ok(!link.startsWith('/'),`Root-relative URL breaks project Pages: ${link}`);
-    const response=await fetch(`${base}/${link}`);
-    assert.equal(response.status,200,`Missing resource: ${link}`);
-    const resolved = new URL(link,'https://example.com/portfolio/');
-    assert.ok(resolved.pathname.startsWith('/portfolio/'));
+  const checked=new Map();
+  for(const file of [...pageFiles,'credentials.html','credentials-tr.html']) {
+    const source=await readFile(path.join(publicDir,file),'utf8');
+    for(const [,link] of source.matchAll(/(?:href|src)="([^"]+)"/g)) {
+      if(/^(https:|mailto:)/.test(link)) continue;
+      assert.ok(!link.startsWith('/'),`Root-relative URL breaks project Pages: ${file}: ${link}`);
+      const resolved = new URL(link,`https://example.com/portfolio/${file}`);
+      assert.ok(resolved.pathname.startsWith('/portfolio/'));
+      const resource=resolved.pathname.slice('/portfolio/'.length);
+      if(!checked.has(resource)) {
+        const response=await fetch(`${base}/${resource}`);
+        assert.equal(response.status,200,`Missing resource: ${file}: ${link}`);
+        checked.set(resource,/\.html$/.test(resource)?await response.text():'');
+      }
+      if(resolved.hash) {
+        const target=checked.get(resource);
+        assert.ok(target.includes(`id="${resolved.hash.slice(1)}"`),`Missing anchor: ${file}: ${link}`);
+      }
+    }
   }
+});
+
+test('homepage leads with experience and keeps optional depth on separate pages',async () => {
+  assert.ok(html.indexOf('id="experience"')<html.indexOf('id="work"'));
+  assert.equal([...html.matchAll(/class="work-preview"/g)].length,3);
+  assert.equal([...html.matchAll(/class="credential-feature"/g)].length,3);
+  assert.doesNotMatch(html,/class="case-content"|data-run(?:[ =>])|data-decision-start|class="knowledge-map"|id="dashboard"/);
+  for(const id of ['work-search','work-product','work-identity','work-data','work-jobs','work-operations','work-payment','search-case-study']) assert.ok(workHtml.includes(`id="${id}"`));
+  const lab=await readFile(path.join(publicDir,'lab.html'),'utf8');
+  assert.equal([...lab.matchAll(/data-scenario="/g)].length,5);
+  assert.equal([...lab.matchAll(/class="knowledge-track"/g)].length,12);
+  assert.match(lab,/data-decision-start/);
+  assert.match(lab,/id="dashboard"/);
+});
+
+test('language routes retain the current page and fragments',() => {
+  assert.equal(pageHref('work','tr','#work-search'),'work-tr.html#work-search');
+  assert.equal(pageHref('lab','en','#decision-lab'),'lab.html#decision-lab');
+  assert.equal(localizeHref('work.html#work-jobs','tr'),'work-tr.html#work-jobs');
+  assert.equal(localizeHref('lab-tr.html?lang=tr#system-trace','en'),'lab.html?lang=tr#system-trace');
+  assert.equal(localizeHref('index.html#experience','tr'),'tr.html#experience');
+  assert.equal(localizeHref('#work-search','tr'),'#work-search');
+  assert.equal(localizeHref('https://example.com/work.html','tr'),'https://example.com/work.html');
 });
 test('private working notes and employer source are absent from public assets',async () => {
   async function inspect(folder) {

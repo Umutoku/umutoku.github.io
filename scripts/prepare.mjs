@@ -15,25 +15,28 @@ function localizeAria(page, lang) {
  return page.replace(/data-i18n-aria="([^"]+)" aria-label="[^"]*"/g,(_,key)=>`data-i18n-aria="${key}" aria-label="${esc(uiLabels[key][lang])}"`);
 }
 html = localizeAria(html,'en');
-const featured = [credentials[0],credentials[5],credentials[7],credentials[6],credentials[22],credentials[1]];
+const featured = [credentials[0],credentials[5],credentials[7]];
 const card = item => `<a class="credential-feature" href="${esc(item.url)}" target="_blank" rel="noopener"><span>${esc(item.issuer)} / ${item.issued?.slice(0,4) || ''}</span><h3>${esc(item.title)}</h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a>`;
 html=html.replace(/<div class="featured-credentials">[\s\S]*?<\/div>/,`<div class="featured-credentials">${featured.map(card).join('')}</div>`);
 const en={};
-const translated=html.replace(/(<([\w-]+)\b[^>]*data-i18n="([^"]+)"[^>]*>)([\s\S]*?)(<\/\2>)/g,(match,start,tag,key,content,end)=>{
+function translate(page) { return page.replace(/(<([\w-]+)\b[^>]*data-i18n="([^"]+)"[^>]*>)([\s\S]*?)(<\/\2>)/g,(match,start,tag,key,content,end)=>{
  en[key]=unesc(content.replaceAll('<br>','\n'));
  if(!tr[key]) throw new Error(`Missing translation: ${key}`);
  return start+esc(tr[key]).replaceAll('\n','<br>')+end;
-});
-function seo(page,lang,file) {
+}); }
+const pages=[{kind:'home',en:'index.html',tr:'tr.html'},{kind:'work',en:'work.html',tr:'work-tr.html'},{kind:'lab',en:'lab.html',tr:'lab-tr.html'}];
+function seo(page,lang,file,kind='home') {
  const canonical = base+file;
- const title = lang==='tr'?'Umut Oku | .NET Backend Mühendisi':'Umut Oku | .NET Backend Engineer';
+ const titles={home:{en:'Umut Oku | .NET Backend Engineer',tr:'Umut Oku | .NET Backend Mühendisi'},work:{en:'Engineering work | Umut Oku',tr:'Mühendislik çalışmaları | Umut Oku'},lab:{en:'Systems workshop | Umut Oku',tr:'Sistem atölyesi | Umut Oku'}};
+ const title=titles[kind][lang];
+ const route=pages.find(item=>item.kind===kind);
  const description = lang==='tr'?'Umut Oku: .NET, mikroservis, Elasticsearch, PostgreSQL, Redis ve DevOps. Ürün, veri, ödeme ve dağıtık sistemler; projeler ve deneyim.':'Umut Oku: .NET and distributed systems engineer. Product, Elasticsearch, PostgreSQL, Redis, messaging, payments and DevOps. Projects, experience and a hands-on systems lab.';
  const schema={'@context':'https://schema.org','@type':'ProfilePage',mainEntity:{'@type':'Person',name:'Umut Oku',alternateName:'Umutoku',jobTitle:'Software Engineer',url:base,sameAs:['https://www.linkedin.com/in/umutoku/','https://github.com/Umutoku'],knowsAbout:['C#','ASP.NET Core','Microservices','Elasticsearch','PostgreSQL','Redis','Apache Kafka','RabbitMQ','CQRS','Payment systems','Docker','Kubernetes','Operational diagnostics','Retrieval-augmented generation']}};
  return page.replace(/\n\s*<!-- seo:start -->[\s\S]*?<!-- seo:end -->/,'').replace(/<title>.*?<\/title>/,`<title>${title}</title>`).replace(/<meta name="description"[^>]+>/,`<meta name="description" content="${esc(description)}">`).replace(/<meta property="og:title"[^>]+>/,`<meta property="og:title" content="${title}">`).replace(/<meta property="og:description"[^>]+>/,`<meta property="og:description" content="${esc(description)}">`).replace('</head>',`<!-- seo:start -->
   <link rel="canonical" href="${canonical}">
-  <link rel="alternate" hreflang="en" href="${base}">
-  <link rel="alternate" hreflang="tr" href="${base}tr.html">
-  <link rel="alternate" hreflang="x-default" href="${base}">
+  <link rel="alternate" hreflang="en" href="${base+(kind==='home'?'':route.en)}">
+  <link rel="alternate" hreflang="tr" href="${base+route.tr}">
+  <link rel="alternate" hreflang="x-default" href="${base+(kind==='home'?'':route.en)}">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta property="og:url" content="${canonical}">
   <meta property="og:locale" content="${lang==='tr'?'tr_TR':'en_US'}">
@@ -45,8 +48,15 @@ function seo(page,lang,file) {
   <!-- seo:end -->
 </head>`);
 }
-await writeFile(new URL('index.html',root),seo(html,'en',''));
-await writeFile(new URL('tr.html',root),localizeAria(seo(translated,'tr','tr.html'),'tr').replace('<html lang="en"','<html lang="tr"').replace(`aria-label="${languageAction.en}" data-language>TR`,`aria-label="${languageAction.tr}" data-language>EN`).replaceAll('href="credentials.html"','href="credentials-tr.html"'));
+for(const page of pages) {
+ let english=page.kind==='home'?html:await readFile(new URL(page.en,root),'utf8');
+ if(page.kind==='lab') english=english.replace(/<div class="knowledge-map">[\s\S]*?<\/div><p class="knowledge-note"/,`<div class="knowledge-map">${tracks.replaceAll('href="#work-','href="work.html#work-').replaceAll(' data-work-link','')}</div><p class="knowledge-note"`);
+ english=localizeAria(english,'en');
+ const translated=translate(english);
+ await writeFile(new URL(page.en,root),seo(english,'en',page.kind==='home'?'':page.en,page.kind));
+ const turkish=localizeAria(seo(translated,'tr',page.tr,page.kind),'tr').replace('<html lang="en"','<html lang="tr"').replace(`aria-label="${languageAction.en}" data-language>TR`,`aria-label="${languageAction.tr}" data-language>EN`).replace(/href="(index|work|lab|credentials)\.html([#?][^"]*)?"/g,(_,name,fragment='')=>`href="${name==='index'?'tr':name+'-tr'}.html${fragment}"`);
+ await writeFile(new URL(page.tr,root),turkish);
+}
 await writeFile(new URL('data/tr.json',root),JSON.stringify(tr,null,2)+'\n');
 await writeFile(new URL('data/en.json',root),JSON.stringify(en,null,2)+'\n');
 await writeFile(new URL('data/credentials.json',root),JSON.stringify({source:'https://www.linkedin.com/in/umutoku/details/certifications/',captured:'2026-10-29',credentials},null,2)+'\n');
@@ -60,7 +70,7 @@ for(const lang of ['en','tr']) {
  await writeFile(new URL(filename,root),page);
 }
 await writeFile(new URL('robots.txt',root),`User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: ${base}sitemap.xml\n`);
-await writeFile(new URL('llms.txt',root),`# Umut Oku\n\n> .NET backend and distributed systems engineer based in Istanbul, Türkiye.\n\nProfessional work spans product/catalog APIs, Elasticsearch search and indexing, PostgreSQL query projections, Redis caching, Kafka and RabbitMQ workflows, identity services, dashboards, background processing, payment integrations and operational diagnosis. Current employment: Software Engineer at Özdisan. Earlier employers include KoçDigital and iCredible; freelance work through Fiverr. Personal projects cover microservices, Semantic Kernel, LangChain, LangGraph and RAG. These learning projects are separate from employer systems.\n\n## Pages\n- [Portfolio in English](${base}): professional work, experience, a capability map and interactive demonstrations.\n- [Türkçe portföy](${base}tr.html): same profile in Turkish.\n- [Learning records](${base}credentials.html): 47 course, workshop and credential records, with original source links.\n- [CV](${base}documents/Umut-Oku-CV.pdf): concise professional history.\n\n## Identity\n- [LinkedIn](https://www.linkedin.com/in/umutoku/)\n- [GitHub](https://github.com/Umutoku)\n\n## Interpretation\nInteractive architecture and failure scenarios use sample data. The dashboard groups courses, workshops and credentials by topic; browser diagnostics show loading measurements for the current visit. Professional work, personal projects and learning records are labelled separately.\n`);
-await writeFile(new URL('sitemap.xml',root),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${['','tr.html','credentials.html','credentials-tr.html'].map(file=>`<url><loc>${base+file}</loc></url>`).join('')}</urlset>\n`);
+await writeFile(new URL('llms.txt',root),`# Umut Oku\n\n> .NET backend and distributed systems engineer based in Istanbul, Türkiye.\n\nProfessional work spans product/catalog APIs, Elasticsearch search and indexing, PostgreSQL query projections, Redis caching, Kafka and RabbitMQ workflows, identity services, dashboards, background processing, payment integrations and operational diagnosis. Current employment: Software Engineer at Özdisan. Earlier employers include KoçDigital and iCredible; freelance work through Fiverr. Personal projects cover microservices, Semantic Kernel, LangChain, LangGraph and RAG. These learning projects are separate from employer systems.\n\n## Pages\n- [Portfolio in English](${base}): experience, selected contributions and a capability overview.\n- [Türkçe portföy](${base}tr.html): same profile in Turkish.\n- [Engineering work](${base}work.html): detailed contributions and engineering decisions.\n- [Mühendislik çalışmaları](${base}work-tr.html): engineering work in Turkish.\n- [Systems workshop](${base}lab.html): interactive decisions, failure scenarios and learning dashboard.\n- [Sistem atölyesi](${base}lab-tr.html): systems workshop in Turkish.\n- [Learning records](${base}credentials.html): 47 course, workshop and credential records, with original source links.\n- [CV](${base}documents/Umut-Oku-CV.pdf): concise professional history.\n\n## Identity\n- [LinkedIn](https://www.linkedin.com/in/umutoku/)\n- [GitHub](https://github.com/Umutoku)\n\n## Interpretation\nInteractive architecture and failure scenarios use sample data. The dashboard groups courses, workshops and credentials by topic; browser diagnostics show loading measurements for the current visit. Professional work, personal projects and learning records are labelled separately.\n`);
+await writeFile(new URL('sitemap.xml',root),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${['','tr.html','work.html','work-tr.html','lab.html','lab-tr.html','credentials.html','credentials-tr.html'].map(file=>`<url><loc>${base+file}</loc></url>`).join('')}</urlset>\n`);
 console.log(`Prepared EN/TR portfolio, 47 credentials and SEO for ${base}`);
 await import('./check-public-copy.mjs');

@@ -5,8 +5,12 @@
 Professional work spans product/catalog APIs, Elasticsearch search and indexing, PostgreSQL query projections, Redis caching, Kafka and RabbitMQ workflows, identity services, dashboards, background processing, payment integrations and operational diagnosis. Current employment: Software Engineer at Özdisan. Earlier employers include KoçDigital and iCredible; freelance work through Fiverr. Personal projects cover microservices, Semantic Kernel, LangChain, LangGraph and RAG. These learning projects are separate from employer systems.
 
 ## Pages
-- [Portfolio in English](https://umutoku.github.io/): professional work, experience, a capability map and interactive demonstrations.
+- [Portfolio in English](https://umutoku.github.io/): experience, selected contributions and a capability overview.
 - [Türkçe portföy](https://umutoku.github.io/tr.html): same profile in Turkish.
+- [Engineering work](https://umutoku.github.io/work.html): detailed contributions and engineering decisions.
+- [Mühendislik çalışmaları](https://umutoku.github.io/work-tr.html): engineering work in Turkish.
+- [Systems workshop](https://umutoku.github.io/lab.html): interactive decisions, failure scenarios and learning dashboard.
+- [Sistem atölyesi](https://umutoku.github.io/lab-tr.html): systems workshop in Turkish.
 - [Learning records](https://umutoku.github.io/credentials.html): 47 course, workshop and credential records, with original source links.
 - [CV](https://umutoku.github.io/documents/Umut-Oku-CV.pdf): concise professional history.
 

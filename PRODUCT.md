@@ -28,5 +28,8 @@ Umut Oku. The user approved a dark, interactive systems-workshop direction and t
 ## Product Principles
 Evidence before superlatives. Clear personal contribution. Direct access to work and contact. Innovation through useful interaction. Honest project maturity.
 
+## Information hierarchy
+The homepage is a concise hiring overview: hero and capability landscape, experience first, three short contribution links, a compact toolkit, three learning records and contact. Detailed engineering cases belong on work.html/work-tr.html. The decision game, scenarios, twelve technology tracks and learning dashboard belong on lab.html/lab-tr.html. Preserve the established visual identity and all factual job titles and years. Senior-level responsibility is conveyed through scope, initiative and ownership rather than an invented employment title.
+
 ## Open Decisions
 The user requested free GitHub hosting. Target: Umutoku/umutoku.github.io. Publish only the reviewed, sanitised portfolio source. The dashboard summarises twelve engineering tracks and 47 verified LinkedIn learning records. Live measurements come only from the current browser visit. Never connect the public dashboard to employer environments; never label curated or simulated values live. A separate .NET hosting provider is unnecessary for the free static site.

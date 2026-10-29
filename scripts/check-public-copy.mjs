@@ -24,7 +24,7 @@ export function findEditorialNotes(source) {
 
 const root=new URL('../src/Portfolio.Web/wwwroot/',import.meta.url);
 const issues=[];
-for(const file of ['index.html','tr.html','credentials.html','credentials-tr.html','llms.txt']) {
+for(const file of ['index.html','tr.html','work.html','work-tr.html','lab.html','lab-tr.html','credentials.html','credentials-tr.html','llms.txt']) {
   const source=await readFile(new URL(file,root),'utf8');
   for(const note of findEditorialNotes(source))issues.push(`${file}: ${note}`);
 }

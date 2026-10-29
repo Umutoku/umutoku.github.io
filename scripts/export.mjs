@@ -8,7 +8,7 @@ const source = path.join(root,'src','Portfolio.Web','wwwroot');
 const output = path.join(root,'artifacts','site');
 await mkdir(output,{recursive:true});
 // Explicit public allowlist. Never copy the workspace or research notes.
-for(const entry of ['index.html','tr.html','credentials.html','credentials-tr.html','robots.txt','sitemap.xml','llms.txt','styles','scripts','fonts','assets','data','documents']) {
+for(const entry of ['index.html','tr.html','work.html','work-tr.html','lab.html','lab-tr.html','credentials.html','credentials-tr.html','robots.txt','sitemap.xml','llms.txt','styles','scripts','fonts','assets','data','documents']) {
   await cp(path.join(source,entry),path.join(output,entry),{recursive:true});
 }
 const home = await readFile(path.join(output,'index.html'),'utf8');

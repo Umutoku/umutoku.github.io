@@ -179,6 +179,8 @@ The hero pairs a large statement with supporting copy before becoming one column
 
 Work examples are expandable ruled rows. The title and outcome occupy the leading column; technical context and an expand affordance occupy the remainder. At 900px the context column is hidden. The title-to-outcome row gap is 16px. Experience, demonstration and contact sections collapse to one column at 640px. The experience introduction is sticky on wider screens and static on mobile.
 
+The homepage leads with the existing hero and domain landscape, followed by the employment timeline. Three ruled contribution links replace expanded case narratives on this overview. Each link pairs a title and technical context with one short ownership statement; on mobile these become a single reading column with an arrow beside the title. The compact toolkit uses six open groups and one tonal invitation to the workshop. Three featured learning records link to the full archive. Full cases live on the work route; games, scenarios, detailed technology tracks and the dashboard live on the workshop route. Both routes reuse the header, type, palette and disclosure components.
+
 ## Elevation & Depth
 
 The implemented surfaces use no shadows. Depth comes from graphite tone changes, one-pixel rules and clear spacing. A selected domain is brighter than the canvas; the demonstration area is brighter and the contact area is darker. Hover does not introduce a floating-card effect.

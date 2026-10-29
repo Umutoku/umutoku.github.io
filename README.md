@@ -40,7 +40,10 @@ The optional Dockerfile runs the .NET version on port 8080 as the built-in non-r
 
 ## Content and design
 
-- `src/Portfolio.Web/wwwroot/index.html`: English source page and professional work.
+- `src/Portfolio.Web/wwwroot/index.html`: concise English homepage, led by experience and three selected contributions.
+- `src/Portfolio.Web/wwwroot/work.html`: seven detailed engineering examples and the category-search case study.
+- `src/Portfolio.Web/wwwroot/lab.html`: decision game, five failure scenarios, detailed technology tracks and learning dashboard.
+- Each page has a generated Turkish counterpart; language switching preserves the current page and fragment. Old homepage work/lab fragments resolve to their new pages.
 - `src/Portfolio.Web/wwwroot/data/tr.json`: Turkish copy.
 - `scripts/credentials-source.mjs`: 47 public LinkedIn learning records, captured 29 October 2026. Original titles, issuers and listed issue dates are preserved; three records have no date. These include course completions and workshops as well as credentials.
 - `scripts/prepare.mjs`: generates English/Turkish pages, the searchable credential archive, translation data, sitemap and robots.txt.
@@ -55,6 +58,8 @@ The optional Dockerfile runs the .NET version on port 8080 as the built-in non-r
 - `DESIGN.md`: the visual system and interaction guidance.
 
 The capability map presents applied tools and continued study without a repository showcase. Employment contributions are described through anonymous work examples without proprietary code, internal issue links, endpoints or customer records. The employment timeline retains factual employer names. No unmeasured performance figures are claimed. Historical roles use years because the supplied CV and LinkedIn disagree on some end months.
+
+The homepage keeps all six employment entries, a compact toolkit and three featured learning records. Detailed decisions, regression coverage, demonstrations and learning counts are available on the work and workshop pages instead of repeating the same contribution on the homepage. Workshop code loads only on the workshop route.
 
 ## Search and accessibility
 

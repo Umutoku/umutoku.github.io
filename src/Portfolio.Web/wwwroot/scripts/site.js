@@ -1,7 +1,6 @@
-import { initDashboard } from './dashboard.js';
+import { pageHref, localizeHref } from './page-routes.js';
 import { uiLabels, languageAction } from './ui-labels.js';
 import { domainLinks } from './domain-links.js';
-import { initDecisionLab } from './decision-lab.js';
 const nodes = {
   product: { en:['Product','Catalog, categories and variants connect customer-facing APIs with Elasticsearch, Redis and PostgreSQL. I work across those boundaries.'],tr:['Ürün','Katalog, kategori ve varyantlar; müşteriye dönük API’leri Elasticsearch, Redis ve PostgreSQL ile birleştirir. Bu sınırlar arasında çalışıyorum.'] },
   search: { en:['Search','Elasticsearch indexing, category population, property matching and result counts. Search quality depends on the path from source data to the index.'],tr:['Arama','Elasticsearch indeksleme, kategori aktarımı, özellik eşleştirme ve sonuç sayıları. Arama kalitesi, kaynak veriden indekse uzanan akışa bağlıdır.'] },
@@ -15,9 +14,11 @@ const nodes = {
   erp: { en: ['Order / ERP', 'Business records follow the payment outcome. Ambiguous results need reconciliation.'], tr: ['Sipariş / ERP', 'İş kayıtları ödeme sonucunu izler. Belirsiz sonuçlar mutabakat gerektirir.'] }
 };
 let language = document.documentElement.lang === 'tr' ? 'tr' : 'en';
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let selectedNode = 'product';
 function selectNode(key) {
   selectedNode = key;
+  if(!document.querySelector('[data-node-title]')) return;
   document.querySelectorAll('[data-node]').forEach(button => {
     const selected = button.dataset.node === key;
     button.classList.toggle('is-selected', selected);
@@ -26,7 +27,7 @@ function selectNode(key) {
   document.querySelector('[data-node-title]').textContent = nodes[key][language][0];
   document.querySelector('[data-node-description]').textContent = nodes[key][language][1];
   const relation = domainLinks[key];
-  document.querySelector('[data-domain-work]').href = `#${relation.caseId}`;
+  document.querySelector('[data-domain-work]').href = pageHref('work',language,`#${relation.caseId}`);
   document.querySelector('[data-node-relations]').textContent = `${nodes[key][language][0]} → ${relation.related.map(id=>nodes[id][language][0]).join(' · ')}`;
 }
 document.querySelectorAll('[data-node]').forEach(button => button.addEventListener('click', () => selectNode(button.dataset.node)));
@@ -57,29 +58,36 @@ async function changeLanguage(next) {
       return;
     } finally { languageButton.disabled = false; }
   }
-  cancelPlayback();
   language = next;
   document.documentElement.lang = next;
   document.querySelectorAll('[data-i18n]').forEach(element => { if(copies[next][element.dataset.i18n]) writeText(element, copies[next][element.dataset.i18n]); });
   languageButton.textContent = next === 'en' ? 'TR' : 'EN';
   languageButton.setAttribute('aria-label', languageAction[next]);
   languageButton.removeAttribute('title');
-  document.title = text('Umut Oku | .NET Backend Engineer', 'Umut Oku | .NET Backend Mühendisi');
+  const page=document.documentElement.dataset.page || 'home';
+  const titles={home:['Umut Oku | .NET Backend Engineer','Umut Oku | .NET Backend Mühendisi'],work:['Engineering work | Umut Oku','Mühendislik çalışmaları | Umut Oku'],lab:['Systems workshop | Umut Oku','Sistem atölyesi | Umut Oku']};
+  document.title=text(...titles[page]);
+  document.querySelector('meta[property="og:title"]').content=document.title;
   document.querySelector('meta[name="description"]').content = text('Umut Oku: .NET and distributed systems engineer. Product, Elasticsearch, PostgreSQL, Redis, messaging, payments and DevOps.', 'Umut Oku: .NET, mikroservis, Elasticsearch, PostgreSQL, Redis ve DevOps. Ürün, veri, ödeme ve dağıtık sistemler.');
   document.querySelectorAll('[data-i18n-aria]').forEach(element=>element.setAttribute('aria-label',uiLabels[element.dataset.i18nAria][next]));
   updateMenuLabel();
-  document.querySelector('[data-credentials-link]').href = text('credentials.html','credentials-tr.html');
+  document.querySelectorAll('a[href]').forEach(link=>{link.setAttribute('href',localizeHref(link.getAttribute('href'),next));});
   selectNode(selectedNode);
-  if (currentTrace) renderTrace(currentTrace);
-  runButton.disabled = !currentTrace;
-  document.querySelector('[data-copy-status]').textContent = '';
+  const status=document.querySelector('[data-copy-status]'); if(status)status.textContent='';
   try { localStorage.setItem('portfolio-language', next); } catch { /* Storage is optional. */ }
   const location = new URL(window.location.href);
-  location.pathname = location.pathname.replace(/[^/]*$/, next === 'tr' ? 'tr.html' : 'index.html');
+  location.pathname = location.pathname.replace(/[^/]*$/, pageHref(page,next));
   location.searchParams.delete('lang');
   history.replaceState(null,'',location);
   const canonical = document.querySelector('link[rel="canonical"]');
-  if(canonical) canonical.href = new URL(next === 'tr' ? 'tr.html' : './',canonical.href).href;
+  if(canonical) canonical.href = new URL(page==='home' && next==='en'?'./':pageHref(page,next),canonical.href).href;
+  document.querySelector('meta[property="og:url"]').content=canonical.href;
+  document.querySelector('meta[property="og:locale"]').content=next==='tr'?'tr_TR':'en_US';
+  const filterStatus=document.querySelector('[data-filter-status]');
+  if(filterStatus) {
+    const count=[...document.querySelectorAll('.case')].filter(item=>!item.hidden).length;
+    filterStatus.textContent=text(`${count} selected work examples shown.`,`${count} çalışma örneği gösteriliyor.`);
+  }
   document.dispatchEvent(new CustomEvent('portfolio:language',{detail:next}));
 }
 languageButton.addEventListener('click', () => changeLanguage(language === 'en' ? 'tr' : 'en'));
@@ -110,88 +118,7 @@ document.querySelectorAll('[data-work-link]').forEach(link=>link.addEventListene
 }));
 window.addEventListener('hashchange',()=>openWork(location.hash.slice(1)));
 
-let currentScenario = 'cache';
-let currentTrace;
-let playbackVersion = 0;
-let traceRequest;
-let staticCatalog;
-const runButton = document.querySelector('[data-run]');
-const traceList = document.querySelector('[data-trace]');
-const simulationStatus = document.querySelector('[data-simulation-status]');
-const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-function cancelPlayback() {
-  playbackVersion++;
-  runButton.disabled = false;
-  runButton.removeAttribute('aria-busy');
-  simulationStatus.textContent = '';
-}
-function renderTrace(trace) {
-  traceList.replaceChildren(...trace.steps.map((step,index) => {
-    const row = document.createElement('li');
-    const number = document.createElement('span');
-    number.className = 'trace-index'; number.textContent = String(index+1).padStart(2,'0');
-    const label = document.createElement('span'); label.textContent = step.title[language];
-    row.append(number,label); return row;
-  }));
-  document.querySelector('[data-result-title]').textContent = trace.result[language];
-  document.querySelector('[data-result-description]').textContent = trace.explanation[language];
-}
-async function loadScenario(id) {
-  cancelPlayback();
-  currentScenario = id;
-  currentTrace = undefined;
-  traceRequest?.abort();
-  traceRequest = new AbortController();
-  const signal = AbortSignal.any([traceRequest.signal, AbortSignal.timeout(8000)]);
-  document.querySelectorAll('[data-scenario]').forEach(button => { const active = button.dataset.scenario === id; button.classList.toggle('is-active',active); button.setAttribute('aria-pressed',String(active)); });
-  runButton.disabled = true;
-  simulationStatus.textContent = text('Loading scenario…','Senaryo yükleniyor…');
-  try {
-    let trace;
-    if(document.documentElement.dataset.runtime === 'api') {
-      const response = await fetch(new URL(`api/traces/${id}`,document.baseURI), {signal});
-      if(!response.ok) throw new Error('The demonstration API is unavailable');
-      trace = await response.json();
-    } else {
-      if(!staticCatalog) {
-        const response = await fetch(new URL('../data/traces.json',import.meta.url),{signal});
-        if(!response.ok) throw new Error('The demonstration data is unavailable');
-        staticCatalog = await response.json();
-      }
-      trace = staticCatalog[id];
-    }
-    if(currentScenario !== id || signal.aborted) return;
-    currentTrace = trace; renderTrace(trace);
-    simulationStatus.textContent = text('Ready to explore.','İncelemeye hazır.');
-  } catch(error) {
-    if(currentScenario !== id || error.name === 'AbortError') return;
-    currentTrace = undefined;
-    simulationStatus.textContent = text('The scenario could not load. Select it again to retry.','Senaryo yüklenemedi. Yeniden denemek için tekrar seçin.');
-  } finally { if(currentScenario === id) runButton.disabled = !currentTrace; }
-}
-document.querySelectorAll('[data-scenario]').forEach(button => button.addEventListener('click',() => loadScenario(button.dataset.scenario)));
-document.querySelector('.trace-link').addEventListener('click',() => loadScenario('cache'));
-runButton.addEventListener('click',async () => {
-  if(!currentTrace) return;
-  cancelPlayback();
-  const version = playbackVersion;
-  runButton.disabled = true; runButton.setAttribute('aria-busy','true');
-  const rows = [...traceList.children];
-  rows.forEach(row => row.className = '');
-  simulationStatus.textContent = text('Replaying the illustrative sequence…','Örnek akış oynatılıyor…');
-  for(let index=0; index<rows.length; index++) {
-    if(version !== playbackVersion) return;
-    rows[index].classList.add('is-current');
-    selectNode(currentTrace.steps[index].node);
-    if(!reducedMotion.matches) await new Promise(resolve => setTimeout(resolve,650));
-    if(version !== playbackVersion) return;
-    rows[index].classList.replace('is-current','is-complete');
-  }
-  runButton.disabled = false; runButton.removeAttribute('aria-busy');
-  simulationStatus.textContent = text('Sequence complete. Try another scenario.','Akış tamamlandı. Başka bir senaryo deneyin.');
-  document.dispatchEvent(new CustomEvent('portfolio:scenario-complete'));
-});
-document.querySelector('[data-copy]').addEventListener('click',async () => {
+document.querySelector('[data-copy]')?.addEventListener('click',async () => {
   const status = document.querySelector('[data-copy-status]');
   try { await navigator.clipboard.writeText('umut.oku@gmail.com'); status.textContent = text('Email copied.','E-posta kopyalandı.'); }
   catch { status.textContent = text('Copy unavailable. Select the email address above.','Kopyalama kullanılamıyor. Yukarıdaki e-posta adresini seçin.'); }
@@ -199,6 +126,7 @@ document.querySelector('[data-copy]').addEventListener('click',async () => {
 const preferredLanguage = new URLSearchParams(location.search).get('lang');
 if((preferredLanguage === 'tr' || preferredLanguage === 'en') && preferredLanguage !== language) await changeLanguage(preferredLanguage);
 selectNode(selectedNode);
-initDashboard();
-initDecisionLab();
-await loadScenario('cache');
+if(document.querySelector('#playground')) {
+ const [{initDashboard},{initDecisionLab},{initTracePlayer}]=await Promise.all([import('./dashboard.js'),import('./decision-lab.js'),import('./trace-player.js')]);
+ initDashboard();initDecisionLab();await initTracePlayer(selectNode);
+}
