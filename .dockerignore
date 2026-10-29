@@ -1,0 +1,11 @@
+**/bin
+**/obj
+.git
+.local
+.impeccable
+.hallmark
+**/.hallmark
+artifacts
+node_modules
+Umut_Oku*.pdf
+tests

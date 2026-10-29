@@ -1,0 +1,17 @@
+**/bin/
+**/obj/
+node_modules/
+artifacts/
+.vs/
+.local/
+.impeccable/review/
+.hallmark/renders/
+desktop.ini
+**/.hallmark/shots/
+Umut_Oku_CV.pdf
+Umut_Oku_Senior_Backend_Engineer_CV.pdf
+.env
+*.user
+.hallmark/
+.impeccable/*
+!.impeccable/design.json

@@ -1,0 +1,16 @@
+{
+  "name": "umut-oku-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "prepare:content": "node scripts/prepare.mjs",
+    "prestart": "node scripts/prepare.mjs",
+    "prebuild": "node scripts/prepare.mjs",
+    "start": "dotnet run --project src/Portfolio.Web --urls http://127.0.0.1:5137",
+    "build": "dotnet build UmutOku.Portfolio.slnx --configuration Release",
+    "test": "node --test tests/portfolio.test.mjs",
+    "export": "node scripts/export.mjs"
+  }
+}

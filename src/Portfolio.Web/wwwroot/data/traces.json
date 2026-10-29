@@ -1,0 +1,284 @@
+{
+  "success": {
+    "id": "success",
+    "illustrative": true,
+    "title": {
+      "en": "A confirmed payment",
+      "tr": "Doğrulanmış bir ödeme"
+    },
+    "result": {
+      "en": "Confirmed, then propagated.",
+      "tr": "Önce doğrulandı, sonra aktarıldı."
+    },
+    "explanation": {
+      "en": "The provider confirms the payment before downstream work begins. The event carries a known outcome.",
+      "tr": "Sonraki işler başlamadan ödeme sağlayıcısı sonucu doğrular. Olay, bilinen bir sonuç taşır."
+    },
+    "steps": [
+      {
+        "node": "client",
+        "state": "accepted",
+        "title": {
+          "en": "Intent received",
+          "tr": "Talep alındı"
+        }
+      },
+      {
+        "node": "gateway",
+        "state": "validated",
+        "title": {
+          "en": "Contract validated",
+          "tr": "Sözleşme doğrulandı"
+        }
+      },
+      {
+        "node": "payment",
+        "state": "confirmed",
+        "title": {
+          "en": "Provider confirms payment",
+          "tr": "Sağlayıcı ödemeyi doğruladı"
+        }
+      },
+      {
+        "node": "events",
+        "state": "published",
+        "title": {
+          "en": "Confirmed outcome published",
+          "tr": "Doğrulanan sonuç yayınlandı"
+        }
+      },
+      {
+        "node": "erp",
+        "state": "recorded",
+        "title": {
+          "en": "Order record updated",
+          "tr": "Sipariş kaydı güncellendi"
+        }
+      }
+    ]
+  },
+  "timeout": {
+    "id": "timeout",
+    "illustrative": true,
+    "title": {
+      "en": "A provider timeout",
+      "tr": "Sağlayıcı zaman aşımı"
+    },
+    "result": {
+      "en": "Unknown is a real state.",
+      "tr": "Belirsizlik de bir durumdur."
+    },
+    "explanation": {
+      "en": "A timeout does not prove failure. Check the provider status before retrying a charge; escalate unresolved ambiguity for reconciliation.",
+      "tr": "Zaman aşımı, başarısızlığın kanıtı değildir. Yeniden tahsilattan önce sağlayıcı durumu sorgulanır; belirsizlik sürüyorsa mutabakata aktarılır."
+    },
+    "steps": [
+      {
+        "node": "client",
+        "state": "accepted",
+        "title": {
+          "en": "Intent received",
+          "tr": "Talep alındı"
+        }
+      },
+      {
+        "node": "gateway",
+        "state": "validated",
+        "title": {
+          "en": "Contract validated",
+          "tr": "Sözleşme doğrulandı"
+        }
+      },
+      {
+        "node": "payment",
+        "state": "unknown",
+        "title": {
+          "en": "Provider response times out",
+          "tr": "Sağlayıcı yanıtı zaman aşımına uğradı"
+        }
+      },
+      {
+        "node": "payment",
+        "state": "checking",
+        "title": {
+          "en": "Query the provider outcome",
+          "tr": "Sağlayıcıdaki sonuç sorgulanır"
+        }
+      },
+      {
+        "node": "erp",
+        "state": "held",
+        "title": {
+          "en": "Hold downstream work for reconciliation",
+          "tr": "Sonraki işlemler mutabakat için bekletilir"
+        }
+      }
+    ]
+  },
+  "duplicate": {
+    "id": "duplicate",
+    "illustrative": true,
+    "title": {
+      "en": "A redelivered event",
+      "tr": "Tekrar teslim edilen olay"
+    },
+    "result": {
+      "en": "One effect. Even on redelivery.",
+      "tr": "Tekrar teslimde de tek etki."
+    },
+    "explanation": {
+      "en": "A consumer checks the operation reference against a durable completion record. A completed operation is acknowledged without repeating its effect.",
+      "tr": "Tüketici, işlem referansını kalıcı tamamlanma kaydıyla kontrol eder. Tamamlanan işlem, etkisi tekrarlanmadan onaylanır."
+    },
+    "steps": [
+      {
+        "node": "events",
+        "state": "received",
+        "title": {
+          "en": "Event received again",
+          "tr": "Olay yeniden alındı"
+        }
+      },
+      {
+        "node": "erp",
+        "state": "checking",
+        "title": {
+          "en": "Look up operation reference",
+          "tr": "İşlem referansı sorgulanır"
+        }
+      },
+      {
+        "node": "erp",
+        "state": "completed",
+        "title": {
+          "en": "Completion record found",
+          "tr": "Tamamlanma kaydı bulundu"
+        }
+      },
+      {
+        "node": "events",
+        "state": "acknowledged",
+        "title": {
+          "en": "Acknowledge without repeating the effect",
+          "tr": "İşlem tekrarlanmadan teslim onaylanır"
+        }
+      }
+    ]
+  },
+  "cache": {
+    "id": "cache",
+    "illustrative": true,
+    "title": {
+      "en": "A cache miss",
+      "tr": "Cache eksikliği"
+    },
+    "result": {
+      "en": "Fast answers need a source of truth.",
+      "tr": "Hızlı yanıtın arkasında asıl veri var."
+    },
+    "explanation": {
+      "en": "The cache is an optimisation, not the owner of the record. A miss reads from PostgreSQL, then warms Redis with an explicit expiry. Write-side invalidation remains a separate responsibility.",
+      "tr": "Cache bir optimizasyondur; kaydın sahibi değildir. Veri yoksa PostgreSQL’den okunur ve Redis belirli bir süreyle doldurulur. Yazım sonrası cache temizliği ayrı bir sorumluluktur."
+    },
+    "steps": [
+      {
+        "node": "product",
+        "state": "requested",
+        "title": {
+          "en": "Product query received",
+          "tr": "Ürün sorgusu alındı"
+        }
+      },
+      {
+        "node": "cache",
+        "state": "miss",
+        "title": {
+          "en": "Redis key is absent",
+          "tr": "Redis anahtarı bulunamadı"
+        }
+      },
+      {
+        "node": "database",
+        "state": "read",
+        "title": {
+          "en": "Read the scoped PostgreSQL projection",
+          "tr": "Hedefli PostgreSQL projeksiyonunu oku"
+        }
+      },
+      {
+        "node": "cache",
+        "state": "populated",
+        "title": {
+          "en": "Cache with an explicit TTL",
+          "tr": "Belirli bir TTL ile cache’e yaz"
+        }
+      },
+      {
+        "node": "product",
+        "state": "returned",
+        "title": {
+          "en": "Return the product response",
+          "tr": "Ürün yanıtını döndür"
+        }
+      }
+    ]
+  },
+  "search": {
+    "id": "search",
+    "illustrative": true,
+    "title": {
+      "en": "A delayed search index",
+      "tr": "Gecikmiş arama indeksi"
+    },
+    "result": {
+      "en": "The index has its own clock.",
+      "tr": "İndeksin de kendi zamanı var."
+    },
+    "explanation": {
+      "en": "A committed product update does not imply an updated search document. Trace the event and indexing step, then reconcile the projection. Make eventual consistency visible rather than promising an immediate match.",
+      "tr": "Kaydedilen ürün değişikliği, arama dokümanının da güncellendiği anlamına gelmez. Olayı ve indeksleme adımını izle, ardından projeksiyonu uzlaştır. Anlık eşleşme sözü vermek yerine eventual consistency’yi görünür kıl."
+    },
+    "steps": [
+      {
+        "node": "database",
+        "state": "committed",
+        "title": {
+          "en": "Product update committed",
+          "tr": "Ürün değişikliği kaydedildi"
+        }
+      },
+      {
+        "node": "events",
+        "state": "queued",
+        "title": {
+          "en": "Indexing event awaits processing",
+          "tr": "İndeksleme olayı işlenmeyi bekliyor"
+        }
+      },
+      {
+        "node": "search",
+        "state": "stale",
+        "title": {
+          "en": "Search still returns the older projection",
+          "tr": "Arama eski projeksiyonu döndürüyor"
+        }
+      },
+      {
+        "node": "operations",
+        "state": "traced",
+        "title": {
+          "en": "Trace event delivery and consumer state",
+          "tr": "Olay teslimini ve tüketici durumunu izle"
+        }
+      },
+      {
+        "node": "search",
+        "state": "reconciled",
+        "title": {
+          "en": "Reconcile the indexed projection",
+          "tr": "İndeksteki projeksiyonu uzlaştır"
+        }
+      }
+    ]
+  }
+}

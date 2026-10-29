@@ -1,0 +1,118 @@
+{
+  "tracks": [
+    {
+      "id": "architecture",
+      "title": {
+        "en": "Service architecture",
+        "tr": "Servis mimarisi"
+      },
+      "applied": ".NET / REST / CQRS / Microservices",
+      "exploration": "Saga / Event Sourcing / Consul"
+    },
+    {
+      "id": "data",
+      "title": {
+        "en": "Data & persistence",
+        "tr": "Veri ve kalıcılık"
+      },
+      "applied": "PostgreSQL / SQL Server / EF Core",
+      "exploration": "Concurrency / Projections / Query semantics"
+    },
+    {
+      "id": "cache",
+      "title": {
+        "en": "Caching & consistency",
+        "tr": "Cache ve tutarlılık"
+      },
+      "applied": "Redis / Cache keys / Invalidation",
+      "exploration": "Distributed cache / TTL / Warm-up"
+    },
+    {
+      "id": "queues",
+      "title": {
+        "en": "Queues & workflows",
+        "tr": "Kuyruklar ve iş akışları"
+      },
+      "applied": "Kafka / RabbitMQ / Hangfire",
+      "exploration": "MassTransit / Saga state machines / MQTT"
+    },
+    {
+      "id": "observability",
+      "title": {
+        "en": "Observability",
+        "tr": "Gözlemlenebilirlik"
+      },
+      "applied": "Logs / Traceability / Elasticsearch / Kibana",
+      "exploration": "OpenTelemetry / OTLP / Prometheus / Jaeger"
+    },
+    {
+      "id": "delivery",
+      "title": {
+        "en": "Containers & delivery",
+        "tr": "Konteyner ve dağıtım"
+      },
+      "applied": "Docker / Kubernetes / Jenkins",
+      "exploration": "Docker Compose / Service discovery / SRE"
+    },
+    {
+      "id": "search",
+      "title": {
+        "en": "Search & discovery",
+        "tr": "Arama ve keşif"
+      },
+      "applied": "Elasticsearch / Indexing / Filters",
+      "exploration": "Relevance / Synonyms / Retrieval"
+    },
+    {
+      "id": "cloud",
+      "title": {
+        "en": "Cloud & serverless",
+        "tr": "Bulut ve serverless"
+      },
+      "applied": "Azure / AWS / Cloud integrations",
+      "exploration": "Azure Functions / Storage / Service Bus"
+    },
+    {
+      "id": "identity",
+      "title": {
+        "en": "Identity & security",
+        "tr": "Kimlik ve güvenlik"
+      },
+      "applied": "Identity / Roles / Validation / API contracts",
+      "exploration": "ASP.NET Identity / Data Protection / API security"
+    },
+    {
+      "id": "realtime",
+      "title": {
+        "en": "Real-time systems",
+        "tr": "Gerçek zamanlı sistemler"
+      },
+      "applied": "Industrial IoT / Modbus / Event processing",
+      "exploration": "gRPC / Streaming / SignalR / MQTT"
+    },
+    {
+      "id": "quality",
+      "title": {
+        "en": "Testing & foundations",
+        "tr": "Test ve temeller"
+      },
+      "applied": "Unit / Integration / Regression testing",
+      "exploration": "Design patterns / TPL / PLINQ / Parallelism"
+    },
+    {
+      "id": "ai",
+      "title": {
+        "en": "AI & new interfaces",
+        "tr": "Yapay zekâ ve yeni arayüzler"
+      },
+      "applied": "Semantic Kernel / LangChain / LangGraph / RAG",
+      "exploration": "Ollama / MCP / Blazor / MAUI / React"
+    }
+  ],
+  "learningGroups": {
+    "Cloud & operations": 9,
+    "AI & data": 13,
+    "Distributed systems": 8,
+    "Backend": 17
+  }
+}

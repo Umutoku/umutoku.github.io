@@ -1,0 +1,351 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-29T19:24:22.2925837Z",
+  "title": "Design System: Umut Oku — Systems Workshop",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Graphite Canvas",
+        "tonalRamp": [
+          "oklch(15% 0.0016 250)",
+          "oklch(26% 0.0044 250)",
+          "oklch(38% 0.0064 250)",
+          "oklch(49% 0.008 250)",
+          "oklch(61% 0.008 250)",
+          "oklch(72% 0.0072 250)",
+          "oklch(84% 0.0048 250)",
+          "oklch(95% 0.0012 250)"
+        ]
+      },
+      "paper-2": {
+        "role": "neutral",
+        "displayName": "Raised Graphite",
+        "tonalRamp": [
+          "oklch(15% 0.0018 250)",
+          "oklch(26% 0.005 250)",
+          "oklch(38% 0.0072 250)",
+          "oklch(49% 0.009 250)",
+          "oklch(61% 0.009 250)",
+          "oklch(72% 0.0081 250)",
+          "oklch(84% 0.0054 250)",
+          "oklch(95% 0.0014 250)"
+        ]
+      },
+      "paper-3": {
+        "role": "neutral",
+        "displayName": "Deep Graphite",
+        "tonalRamp": [
+          "oklch(15% 0.0014 250)",
+          "oklch(26% 0.0039 250)",
+          "oklch(38% 0.0056 250)",
+          "oklch(49% 0.007 250)",
+          "oklch(61% 0.007 250)",
+          "oklch(72% 0.0063 250)",
+          "oklch(84% 0.0042 250)",
+          "oklch(95% 0.0011 250)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Soft White",
+        "tonalRamp": [
+          "oklch(15% 0.001 250)",
+          "oklch(26% 0.0028 250)",
+          "oklch(38% 0.004 250)",
+          "oklch(49% 0.005 250)",
+          "oklch(61% 0.005 250)",
+          "oklch(72% 0.0045 250)",
+          "oklch(84% 0.003 250)",
+          "oklch(95% 0.0008 250)"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Secondary Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0016 250)",
+          "oklch(26% 0.0044 250)",
+          "oklch(38% 0.0064 250)",
+          "oklch(49% 0.008 250)",
+          "oklch(61% 0.008 250)",
+          "oklch(72% 0.0072 250)",
+          "oklch(84% 0.0048 250)",
+          "oklch(95% 0.0012 250)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Readable Graphite Grey",
+        "tonalRamp": [
+          "oklch(15% 0.002 250)",
+          "oklch(26% 0.0055 250)",
+          "oklch(38% 0.008 250)",
+          "oklch(49% 0.01 250)",
+          "oklch(61% 0.01 250)",
+          "oklch(72% 0.009 250)",
+          "oklch(84% 0.006 250)",
+          "oklch(95% 0.0015 250)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Fine Rule",
+        "tonalRamp": [
+          "oklch(15% 0.002 250)",
+          "oklch(26% 0.0055 250)",
+          "oklch(38% 0.008 250)",
+          "oklch(49% 0.01 250)",
+          "oklch(61% 0.01 250)",
+          "oklch(72% 0.009 250)",
+          "oklch(84% 0.006 250)",
+          "oklch(95% 0.0015 250)"
+        ]
+      },
+      "rule-2": {
+        "role": "neutral",
+        "displayName": "Strong Rule",
+        "tonalRamp": [
+          "oklch(15% 0.0024 250)",
+          "oklch(26% 0.0066 250)",
+          "oklch(38% 0.0096 250)",
+          "oklch(49% 0.012 250)",
+          "oklch(61% 0.012 250)",
+          "oklch(72% 0.0108 250)",
+          "oklch(84% 0.0072 250)",
+          "oklch(95% 0.0018 250)"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Signal Amber",
+        "tonalRamp": [
+          "oklch(15% 0.03 80)",
+          "oklch(26% 0.0825 80)",
+          "oklch(38% 0.12 80)",
+          "oklch(49% 0.15 80)",
+          "oklch(61% 0.15 80)",
+          "oklch(72% 0.135 80)",
+          "oklch(84% 0.09 80)",
+          "oklch(95% 0.0225 80)"
+        ]
+      },
+      "accent-ink": {
+        "role": "primary",
+        "displayName": "Dark Amber Ink",
+        "tonalRamp": [
+          "oklch(15% 0.008 75)",
+          "oklch(26% 0.022 75)",
+          "oklch(38% 0.032 75)",
+          "oklch(49% 0.04 75)",
+          "oklch(61% 0.04 75)",
+          "oklch(72% 0.036 75)",
+          "oklch(84% 0.024 75)",
+          "oklch(95% 0.006 75)"
+        ]
+      },
+      "focus": {
+        "role": "primary",
+        "displayName": "Amber Focus",
+        "tonalRamp": [
+          "oklch(15% 0.03 80)",
+          "oklch(26% 0.0825 80)",
+          "oklch(38% 0.12 80)",
+          "oklch(49% 0.15 80)",
+          "oklch(61% 0.15 80)",
+          "oklch(72% 0.135 80)",
+          "oklch(84% 0.09 80)",
+          "oklch(95% 0.0225 80)"
+        ]
+      },
+      "clear": {
+        "role": "neutral",
+        "displayName": "Clear"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero statement, using the final stylesheet override."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section introductions."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "General third-level headings; individual content groups override size."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Readable narrative and interface baseline."
+      },
+      "label": {
+        "displayName": "Action Label",
+        "purpose": "Medium-weight button text."
+      },
+      "trace-index": {
+        "displayName": "Trace Index",
+        "purpose": "Compact monospace sequence numbers."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-card",
+        "value": "none",
+        "purpose": "Flat surfaces use tones and rules, not cast shadows."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Button background changes and entry animations."
+      },
+      {
+        "name": "dur-micro",
+        "value": "120ms",
+        "purpose": "Button background transitions."
+      },
+      {
+        "name": "dur-long",
+        "value": "420ms",
+        "purpose": "Entry opacity and vertical translation."
+      },
+      {
+        "name": "trace-step",
+        "value": "650ms",
+        "purpose": "Current-step motion and replay delay, suppressed with reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-desktop",
+        "value": "1100px"
+      },
+      {
+        "name": "two-track-columns",
+        "value": "1000px"
+      },
+      {
+        "name": "compact-sections",
+        "value": "900px"
+      },
+      {
+        "name": "mobile-navigation",
+        "value": "800px"
+      },
+      {
+        "name": "single-content-column",
+        "value": "640px"
+      },
+      {
+        "name": "compact-phone",
+        "value": "520px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main action with an amber fill and soft-white hover.",
+      "html": "<button class=\"ds-button-primary\" type=\"button\">Explore my work</button>",
+      "css": ".ds-button-primary{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-sm);min-height:48px;padding:var(--space-sm) var(--space-button);border:1px solid var(--color-rule-2);border-radius:var(--radius-pill);font-family:var(--font-body);font-size:15px;font-weight:500;cursor:pointer;transition:background-color var(--dur-micro) var(--ease-out); background:var(--color-accent);border-color:var(--color-accent);color:var(--color-accent-ink);}.ds-button-primary:hover{background:var(--color-ink);border-color:var(--color-ink);color:var(--color-paper);}.ds-button-primary:active{transform:translateY(1px);}.ds-button-primary:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px;}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Bordered secondary action for inspecting or browsing.",
+      "html": "<button class=\"ds-button-secondary\" type=\"button\">Inspect this visit</button>",
+      "css": ".ds-button-secondary{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-sm);min-height:48px;padding:var(--space-sm) var(--space-button);border:1px solid var(--color-rule-2);border-radius:var(--radius-pill);font-family:var(--font-body);font-size:15px;font-weight:500;cursor:pointer;transition:background-color var(--dur-micro) var(--ease-out); background:var(--color-clear);color:var(--color-ink);}.ds-button-secondary:hover{background:var(--color-paper-2);}.ds-button-secondary:active{transform:translateY(1px);}.ds-button-secondary:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px;}"
+    },
+    {
+      "name": "Credential Search",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Visible label and raised graphite field for credential lookup.",
+      "html": "<label class=\"ds-field-label\" for=\"ds-search\">Search credentials</label><input class=\"ds-search\" id=\"ds-search\" type=\"search\" placeholder=\"Course, issuer or topic\">",
+      "css": ".ds-field-label{display:block;font-family:var(--font-body);font-size:14px;color:var(--color-ink);margin-bottom:var(--space-xs);}.ds-search{width:100%;min-height:48px;border:1px solid var(--color-rule-2);background:var(--color-paper-2);color:var(--color-ink);padding:var(--space-sm);border-radius:4px;font-family:var(--font-body);font-size:1rem;}.ds-search::placeholder{color:var(--color-muted);}.ds-search:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px;}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Muted text navigation on a ruled graphite header.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Portfolio\"><a class=\"ds-nav-link\" href=\"#work\">Selected work</a><a class=\"ds-nav-link\" href=\"#dashboard\">Dashboard</a><a class=\"ds-nav-link\" href=\"#experience\">Experience</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-xl);background:var(--color-paper);border-bottom:1px solid var(--color-rule);}.ds-nav-link{font-family:var(--font-body);font-size:15px;padding-block:var(--space-sm);color:var(--color-muted);text-decoration:none;}.ds-nav-link:hover{color:var(--color-accent);}.ds-nav-link:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px;}"
+    },
+    {
+      "name": "Filter",
+      "kind": "chip",
+      "refersTo": "filter",
+      "description": "A text selector with an amber underline when selected.",
+      "html": "<div class=\"ds-filter-group\" role=\"group\" aria-label=\"Selected work filters\"><button class=\"ds-filter ds-filter-active\" type=\"button\" aria-pressed=\"true\">All work</button><button class=\"ds-filter\" type=\"button\" aria-pressed=\"false\">Platform</button></div>",
+      "css": ".ds-filter-group{display:flex;gap:var(--space-lg);flex-wrap:wrap;}.ds-filter{border:none;border-bottom:1px solid var(--color-clear);background:var(--color-clear);padding:var(--space-sm) 0;min-height:44px;color:var(--color-muted);font-family:var(--font-body);font-size:15px;cursor:pointer;}.ds-filter:hover{color:var(--color-ink);}.ds-filter-active{color:var(--color-accent);border-bottom-color:var(--color-accent);}.ds-filter:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px;}"
+    },
+    {
+      "name": "Knowledge Track",
+      "kind": "card",
+      "refersTo": "knowledge-track",
+      "description": "Open ruled content group, without a surrounding card shell.",
+      "html": "<article class=\"ds-track\"><h3 class=\"ds-track-title\">Data &amp; consistency</h3><p class=\"ds-track-tools\">PostgreSQL / Redis / SQL</p><p class=\"ds-track-detail\">Query correctness / Cache invalidation</p></article>",
+      "css": ".ds-track{border-top:1px solid var(--color-rule-2);padding-top:var(--space-lg);font-family:var(--font-body);color:var(--color-ink);}.ds-track-title{margin:0;font-size:24px;line-height:1.25;font-weight:500;letter-spacing:var(--tracking-display);}.ds-track-tools{margin:var(--space-lg) 0 0;font-size:15px;line-height:1.7;color:var(--color-ink-2);}.ds-track-detail{margin:var(--space-sm) 0 0;font-size:14px;line-height:1.7;color:var(--color-muted);}"
+    },
+    {
+      "name": "Domain Node",
+      "kind": "custom",
+      "refersTo": "domain-node",
+      "description": "Selected capability tile with an outline icon and technical sublabel.",
+      "html": "<button class=\"ds-domain ds-domain-selected\" type=\"button\" aria-pressed=\"true\"><svg class=\"ds-domain-icon\" viewBox=\"0 0 32 32\" aria-hidden=\"true\"><path d=\"M4 8h24v20H4zM9 8V4h14v4M4 14h24M12 20h8\"/></svg><span class=\"ds-domain-title\">Product</span><span class=\"ds-domain-sub\">Catalog / APIs</span></button>",
+      "css": ".ds-domain{display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:var(--space-md);row-gap:0;width:100%;min-height:108px;padding:var(--space-md);border:0;border-bottom:1px solid var(--color-rule);text-align:left;background:var(--color-paper);color:var(--color-ink);font-family:var(--font-body);font-size:17px;cursor:pointer;}.ds-domain-icon{grid-row:1/3;align-self:center;width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}.ds-domain-sub{grid-column:2;font-size:12px;color:var(--color-muted);}.ds-domain:hover,.ds-domain-selected{background:var(--color-paper-2);color:var(--color-accent);}.ds-domain:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px;}"
+    },
+    {
+      "name": "Metric",
+      "kind": "custom",
+      "refersTo": "metric",
+      "description": "A flat value-and-label pair from the dashboard strip.",
+      "html": "<dl class=\"ds-metric\"><div class=\"ds-metric-cell\"><dt class=\"ds-metric-label\">Learning records</dt><dd class=\"ds-metric-value\">47</dd></div></dl>",
+      "css": ".ds-metric{margin:var(--space-xl) 0;border-block:1px solid var(--color-rule-2);font-family:var(--font-body);color:var(--color-ink);}.ds-metric-cell{padding:var(--space-lg) var(--space-lg) var(--space-lg) 0;}.ds-metric-label{color:var(--color-muted);font-size:14px;}.ds-metric-value{margin:var(--space-md) 0 0;font-size:clamp(2rem,3.2vw,3rem);line-height:1;letter-spacing:-.035em;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Systems Workshop",
+    "overview": "A dark console makes engineering relationships tangible through readable type, fine dividers and direct interaction. Graphite is the working surface; amber identifies a choice, an action or the current step. The interface itself supplies the illustration.\n\nLarge, restrained headings give way to compact, inspectable rows. English and Turkish share the same visual hierarchy, with flexible widths and wrapping. The system is recorded from the completed code-led build; there is no approved image composition to reproduce.",
+    "keyCharacteristics": [
+      "Graphite surfaces with amber interaction cues.",
+      "Host Grotesk headings and body text, with monospace trace indices.",
+      "Flat, ruled groups rather than floating panels.",
+      "Responsive domain grids and explicit selected states.",
+      "Short, optional motion with visible keyboard focus."
+    ],
+    "rules": [
+      {
+        "name": "The Selection Rule",
+        "body": "Amber accompanies a visible action or state; selected filters also gain an underline and selected domains gain a surface change.",
+        "section": "colors"
+      },
+      {
+        "name": "The Flat Surface Rule",
+        "body": "Use surface tone and dividers for grouping; retain the build's shadow-free material.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** preserve the graphite canvas, amber state cues and Host Grotesk hierarchy.",
+      "**Do** use ruled groups and tonal surfaces to separate technical information.",
+      "**Do** retain visible focus, text labels and a second visual cue for selected controls.",
+      "**Do** allow English and Turkish content to wrap within responsive layouts.",
+      "**Do** keep reduced-motion and no-JavaScript reading paths meaningful."
+    ],
+    "donts": [
+      "**Don't** add floating shadows to the established flat surface vocabulary.",
+      "**Don't** replace the domain landscape with a sequential mobile arrow flow.",
+      "**Don't** turn repository showcase styles left in the stylesheet into a public component pattern.",
+      "**Don't** introduce decorative eyebrows or glyph icons as house styles.",
+      "**Don't** treat unused color or radius declarations as established visual decisions."
+    ]
+  }
+}

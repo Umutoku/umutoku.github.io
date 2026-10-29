@@ -1,0 +1,18 @@
+# Umut Oku
+
+> .NET backend and distributed systems engineer based in Istanbul, Türkiye.
+
+Professional work spans product/catalog APIs, Elasticsearch search and indexing, PostgreSQL query projections, Redis caching, Kafka and RabbitMQ workflows, identity services, dashboards, background processing, payment integrations and operational diagnosis. Current employment: Software Engineer at Özdisan. Earlier employers include KoçDigital and iCredible; freelance work through Fiverr. Personal projects cover microservices, Semantic Kernel, LangChain, LangGraph and RAG. These learning projects are separate from employer systems.
+
+## Pages
+- [Portfolio in English](https://umutoku.github.io/): professional work, experience, a capability map and interactive demonstrations.
+- [Türkçe portföy](https://umutoku.github.io/tr.html): same profile in Turkish.
+- [Learning records](https://umutoku.github.io/credentials.html): 47 course, workshop and credential records, with original source links.
+- [CV](https://umutoku.github.io/documents/Umut-Oku-CV.pdf): concise professional history.
+
+## Identity
+- [LinkedIn](https://www.linkedin.com/in/umutoku/)
+- [GitHub](https://github.com/Umutoku)
+
+## Interpretation
+Architecture and failure scenarios are illustrative. They are not production topology or employer metrics. The dashboard groups verified learning records by topic; live page diagnostics refer only to the current browser visit. Course completions are not automatically professional certifications. No quantified production performance claims are made.
